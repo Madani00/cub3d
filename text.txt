@@ -1,0 +1,201 @@
+Phase 1: MinilibX Fundamentals - Getting Pixels on Screen (Easy)
+Objective: Understand how to open a window, create an image buffer, and draw individual pixels.
+
+Window Initialization:
+
+Initialize the MinilibX system.
+
+Create a new window with a predefined width and height (e.g., 640x480 pixels).
+
+Give the window a title (e.g., "My First MinilibX Window").
+
+Image Buffer Creation:
+
+Create a new image buffer in memory that MinilibX can draw to.
+
+Obtain a pointer to the raw pixel data of this image buffer.
+
+Retrieve the image's bits-per-pixel (BPP) and line-size (number of bytes per row) for later pixel manipulation.
+
+Pixel Drawing Function:
+
+Implement a function that takes X and Y coordinates and a color value (e.g., 0xRRGGBB format) as input.
+
+This function should calculate the correct byte offset in the raw image data based on X, Y, BPP, and line-size.
+
+It should then write the individual Red, Green, and Blue color components into the corresponding bytes at that offset.
+
+Displaying the Image:
+
+After drawing some pixels (e.g., a simple colored square or a diagonal line) using your pixel drawing function, put the entire image buffer onto the created window.
+
+Event Loop & Window Closure:
+
+Start the MinilibX event loop to keep the window open and responsive.
+
+Implement a hook to handle the window close event (e.g., clicking the 'X' button) to gracefully shut down MinilibX and exit the program.
+
+Phase 2: Static Raycasting - Your First 3D View (Medium)
+Objective: Implement the core raycasting logic to render a simple 3D scene from a fixed viewpoint onto your MinilibX window.
+
+Map Representation:
+
+Define a small, fixed 2D grid map in your program (e.g., a 5x5 or 10x10 character array or integer array).
+
+Use specific values (e.g., 0 for empty space, 1 for a wall) to represent the maze structure.
+
+Camera Setup:
+
+Define a fixed player position (X, Y coordinates on the map).
+
+Define a fixed player direction vector (e.g., facing directly East).
+
+Define a fixed camera plane vector, perpendicular to the player's direction, which sets the field of view.
+
+Main Raycasting Loop (Per-Column):
+
+Implement a loop that iterates for each vertical column of pixels on your screen.
+
+For each screen column, calculate the specific ray direction.
+
+Ray Traversal (DDA Algorithm):
+
+For each ray, implement a Digital Differential Analyzer (DDA) algorithm.
+
+This algorithm should efficiently step through the map grid squares along the ray's path.
+
+It should determine:
+
+Which wall the ray hits first.
+
+The exact point of intersection on the wall.
+
+The distance from the player to that wall.
+
+Which "side" of the wall (e.g., North, South, East, West) was hit.
+
+Perspective Projection (Wall Height):
+
+Calculate the perpendicular distance to the wall to avoid fisheye distortion.
+
+Use this perpendicular distance to calculate the projected height of the wall slice on the screen.
+
+Determine the start and end pixel rows on the screen where the wall slice should be drawn.
+
+Basic Wall Drawing:
+
+Draw the calculated vertical wall slice using your pixel drawing function from Phase 1.
+
+Use a fixed color for all walls (e.g., 0xFF0000 for red walls).
+
+Optionally, color the top part (ceiling) and bottom part (floor) of the column with different fixed colors.
+
+Rendering Loop:
+
+Integrate your raycasting logic into a continuous rendering loop (using mlx_loop_hook). This will draw the 3D scene repeatedly.
+
+Phase 3: Basic Player Interaction & Movement (Medium-Hard)
+Objective: Allow the player to move and rotate within the 3D environment.
+
+Player State Management:
+
+Store player position (X, Y), direction (X, Y components), and camera plane (X, Y components) in a struct.
+
+Keyboard Hooks for Movement:
+
+Implement mlx_hook for KeyPress and KeyRelease events.
+
+Map specific keys (e.g., 'W' for forward, 'S' for backward, 'A' for turn left, 'D' for turn right) to actions.
+
+When a key is pressed, update the player's position and/or direction vectors appropriately. Ensure collision detection with walls (don't let the player move into map cells marked as walls).
+
+Continuous Movement:
+
+Modify your draw_loop (from mlx_loop_hook) to not only redraw the scene but also to apply pending movement/rotation updates based on currently pressed keys. This provides smooth continuous motion.
+
+Phase 4: Enhanced Rendering - Textures & Shading (Hard)
+Objective: Add visual detail by applying textures to walls and basic shading.
+
+Texture Loading:
+
+Load multiple distinct image files (e.g., .xpm files) as textures using MinilibX's image loading functions.
+
+Store the pixel data for these textures.
+
+Texture Mapping (for walls):
+
+When a ray hits a wall, determine:
+
+Which texture to apply (based on wall type in your map, or which side was hit).
+
+The exact X-coordinate on the texture that corresponds to the hit point on the wall.
+
+During wall rendering, for each vertical pixel of the wall slice:
+
+Calculate the corresponding Y-coordinate on the texture.
+
+Sample the color from the chosen texture at the calculated (texture X, texture Y) coordinates.
+
+Draw that sampled color pixel to the screen.
+
+Basic Shading:
+
+Apply basic distance-based shading: The farther a wall, the darker its rendered color.
+
+Implement side-based shading: Make vertical walls (East/West-facing) slightly darker or lighter than horizontal walls (North/South-facing) to give a sense of depth.
+
+Floor and Ceiling Colors:
+
+Instead of single fixed colors, implement more distinct floor and ceiling colors. Optionally, differentiate between the top and bottom half of the screen.
+
+Phase 5: Map Design and Level Loading (Harder)
+Objective: Allow loading maps from external files and handle multiple levels.
+
+Map File Format:
+
+Define a simple text-based file format for your maps (e.g., lines of characters representing rows, where '1' is wall, '0' is empty, 'P' is player start).
+
+Include metadata like player start position and initial direction within the file.
+
+Map Parsing:
+
+Implement a function to read and parse a map file.
+
+Validate the map structure (e.g., rectangular, surrounded by walls, valid characters).
+
+Store the parsed map data in your program's data structure.
+
+Level Transitions (Optional):
+
+Define conditions for moving between levels (e.g., reaching a specific exit point on the map).
+
+Implement logic to load a new map when these conditions are met.
+
+Phase 6: Advanced Features (Very Hard / Bonus)
+Objective: Push the boundaries of raycasting with more complex elements.
+
+Sprites:
+
+Implement rendering for 2D "sprites" (e.g., enemies, items) that float in the 3D space.
+
+This involves drawing them after walls, correctly scaling them based on their distance, and handling their visibility (e.g., hiding parts behind walls).
+
+Doors:
+
+Implement functional doors that can be opened/closed (e.g., by pressing a key when facing them).
+
+This requires dynamic changes to your map data and potentially animating the door's opening/closing.
+
+Minimap:
+
+Render a small 2D overhead map in a corner of your screen showing the player's position, direction, and visible walls.
+
+More Complex Shading/Lighting:
+
+Implement simple light sources (e.g., torches) that cast more localized light onto walls.
+
+Consider different wall textures for different sides of the map.
+
+Mouse Look:
+
+Implement mouse input to allow the player to look around freely (rotate camera). This might involve locking the mouse cursor to the window.

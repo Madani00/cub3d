@@ -1,34 +1,23 @@
-NAME = cub3D
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-RM = rm -f
-MK = make
-MLXDIR = minilibx-linux
+NAME = cub
+SRC = main.c
+OBJ = $(SRC:.c=.o)
 
+all: $(NAME)
 
-SRCS = main.c 
-OBJS = $(SRCS:.c=.o)
+CFLAGS = 
 
-all: $(MLXDIR)/libmlx.a $(NAME)
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -L./minilibx-linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -o $(NAME)
 
-$(MLXDIR)/libmlx.a:
-	make -C $(MLXDIR)
-
-$(NAME): $(OBJS)
-		$(CC) $(CFLAGS) $(OBJS) -lX11 -lXext -lmlx -lm -o $(NAME)
-
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) -I./includes -I./minilibx-linux -I/usr/include -c $< -o $@
 
 clean:
-		$(MK) clean -C $(MLXDIR)
-		${RM} ${OBJS} $(OBJS_B)
+	rm -rf $(OBJ)
 
 fclean: clean
-		$(MK) fclean -C ./Libft
+	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
-
-.SECONDARY:
+.PHONY: all fclean clean re
