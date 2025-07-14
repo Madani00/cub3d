@@ -2,6 +2,7 @@
 # define CUB3D_H
 
 
+# include "./Libft/libft.h"
 # include "minilibx-linux/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
@@ -9,8 +10,75 @@
 # include <stdbool.h>
 # include <math.h>
 # include <unistd.h>
+# include <fcntl.h>
+
+# define BUFFER_SIZE 1
+
+typedef struct config
+{
+    int north;
+    int south;
+    int west;
+    int east;
+    int floor;
+    int ceiling;
+
+} t_config;
+
+typedef struct path
+{
+    char *iden;
+    char *pth;
+
+} t_path;
+
+typedef struct color
+{
+    char *iden;
+    int arr[3];
+
+} t_color;
 
 
+typedef struct data
+{
+    char **map_all;
+    int column;
+    bool f_newline;
+    t_config find;
+    t_path path[4];
+    int index_p;
+    t_color color[2];
+    int index_c;
+    int orientation;
+    int long_line;
+    char **map;
+} t_data;
+
+
+char	*get_next_line(int fd);
+char	*allocation(int fd);
+char	*fetch_line(char *buffer);
+void	free_error(t_data *data, char *msg);
+char	*join(char *s1, char *s2);
+void	free_args(char **arg);
+void	free_lines(t_data *data);
+void	free_identifiers(t_data *data);
+int		ft_isnum(char *str);
+int		num_length(char *str);
+void	read_file(char **av, t_data *data);
+void	allocate_map(char *all_lines, t_data *data);
+void	check_map_extension(char *map_file);
+int		check_inputs(int ac, char *av[], t_data *data);
+void	initiaze_struct(t_data **data);
+void	free_all(t_data *data, char **configs, char **range, char *msg);
+void	parse_paths(t_data *data, int i);
+void	parse_color(t_data *data, int i);
+void	identifier_duplicate(t_data *data);
+void	check_configuration(t_data *data);
+int		config_path_found(t_data *data, int i);
+int		config_color_found(t_data *data, int i);
+void	parse_color_helper(t_data *data, char **configs, char **clr_range);
 
 
 #endif
