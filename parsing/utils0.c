@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 21:00:00 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/14 12:57:32 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/14 13:14:10 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,17 @@ void	read_file(char **av, t_data *data)
 		free_error(data, "❌ Error\nfile is empty");
 	while (line != NULL)
 	{
-		// if (line[0] == ' ' || line[0] == '1')
-		// 	reach = true;
-		// if (reach && strcmp(line, "\n") == 0)
-		// 	data->f_newline = true;
+		if (line[0] == ' ' || line[0] == '1')
+			reach = true;
+		if (reach && strcmp(line, "\n") == 0)
+			data->f_newline = true;
 		
 		// reach_map(line, data, reach);
-		if (strcmp(line, "\n") != 0)
+		else if (strcmp(line, "\n") != 0)
 		{
 			all_lines = join(all_lines, line);
 			data->column++;
 		}
-		reach_map(line, data, reach);
 		free(line);
 		line = get_next_line(fd);
 	}
