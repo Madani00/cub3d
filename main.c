@@ -1,11 +1,13 @@
 #include "cub.h"   
 #include <stdlib.h>
 
-void init_player(t_player* player)
+bool is_touch_wall(float x_ray,float y_ray,t_data* data);
+
+void init_player(t_player*  player)
 {
     player->x = WIETH / 2;
     player->y = HIGTH / 2; 
-    player->angle = PI / 3;
+    player->angle = PI / 2;
 
     player->turn_left = false;
     player->turn_right = false;
@@ -31,8 +33,8 @@ char **get_map(void)
    char **map = malloc(sizeof(char *) * 25); // 24 rows + NULL
 
     map[0] =  "111111111111111111111111";
-    map[1] =  "100000000000000000000001";
-    map[2] =  "100000000000000000000001";
+    map[1] =  "100100000000000000000001";
+    map[2] =  "100000100100011111100001";
     map[3] =  "100000100000000100000001";
     map[4] =  "100000000000000000000001";
     map[5] =  "100000010000000010000001";
@@ -43,10 +45,10 @@ char **get_map(void)
     map[10] = "100000000000000000000001";
     map[11] = "100000000000000000000001";
     map[12] = "100000000000000000000001";
-    map[13] = "100000000000000000000001";
-    map[14] = "100000000000000000000001";
-    map[15] = "100000000000000000000001";
-    map[16] = "100000000000000000000001";
+    map[13] = "100100100111111000000001";
+    map[14] = "100100100000000001111001";
+    map[15] = "100000100000000000000001";
+    map[16] = "100000111101110011111001";
     map[17] = "100000000000000000000001";
     map[18] = "111111111111111111111111";
     map[19] = NULL;
@@ -76,21 +78,21 @@ void put_pixel_into_frame(int x, int y, t_data* data, int color)
 
 void draw_squrw(int y,int x,t_data *game,int size,int color)
 {
-    for(int i = 0;i < size;i++)
-        put_pixel_into_frame(x + i,y,game,color);
-    for(int i = 0;i < size;i++)
-        put_pixel_into_frame(x,y + i,game,color);
-    for(int i = 0;i < size;i++)
-        put_pixel_into_frame(x + i,y + size,game,color);
-    for(int i = 0;i < size;i++)
-        put_pixel_into_frame(x + size,y + i,game,color);
-    // for (int i = 0;i < size;i++)
-    // {
-    //     for (int  j = 0;j < size;j++)
-    //     {
-    //         put_pixel_into_frame(x + j,y + i,game,color);
-    //     }
-    // }
+    // for(int i = 0;i < size;i++)
+    //     put_pixel_into_frame(x + i,y,game,color);
+    // for(int i = 0;i < size;i++)
+    //     put_pixel_into_frame(x,y + i,game,color);
+    // for(int i = 0;i < size;i++)
+    //     put_pixel_into_frame(x + i,y + size,game,color);
+    // for(int i = 0;i < size;i++)
+    //     put_pixel_into_frame(x + size,y + i,game,color);
+    for (int i = 0;i < size;i++)
+    {
+        for (int  j = 0;j < size;j++)
+        {
+            put_pixel_into_frame(x + j,y + i,game,color);
+        }
+    }
 }
 
 void draw_map(t_data* data)
@@ -157,90 +159,134 @@ int key_release(int keycode, t_data *data)
     return (0);
 }
 
-void move_player(t_data* game)
+void move_player(t_player* player,t_data* game)
 {
-    int speed = 3;
-    float angle_speed = 0.03;
-    t_player* player;
-    player = &game->player;
-
+    int SPEED = 1;
+    float ANGLE_SPEED = 0.01;
+  
     float cos_angle = cos(player->angle);
     float sin_angle = sin(player->angle);
-
-   
+    
     if (player->turn_left)
-        player->angle -= angle_speed;
+        player->angle -= ANGLE_SPEED;
     if (player->turn_right)
-        player->angle += angle_speed;
+        player->angle += ANGLE_SPEED;
 
-    if (player->angle > 2 * PI)
-        player->angle = 0;
-    if (player->angle < 0)
-        player->angle = 2 * PI;
+    // if (player->angle > 2 * PI)
+    //     player->angle = 0;
+    // if (player->angle < 0)
+    //     player->angle = 2 * PI;
 
     if (player->up)
     {
-        player->x += cos_angle * speed;
-        player->y += sin_angle * speed;
+        if (is_touch_wall(player->x  + cos_angle * SPEED,player->y  +  sin_angle * SPEED,game))
+            return;
+        player->x += cos_angle * SPEED;
+        player->y += sin_angle * SPEED;
     }
     if (player->down)
     {
-        player->x -= cos_angle * speed;
-        player->y -= sin_angle * speed;
+        if (is_touch_wall(player->x  - cos_angle * SPEED,player->y  - sin_angle * SPEED,game))
+            return;
+        player->x -= cos_angle * SPEED;
+        player->y -= sin_angle * SPEED;
     }
     if (player->left)
     {
-        player->x += sin_angle * speed;
-        player->y -= cos_angle * speed;
+        if (is_touch_wall(player->x  + sin_angle * SPEED,player->y  - sin_angle * SPEED,game))
+            return;
+        player->x += sin_angle * SPEED;
+        player->y -= cos_angle * SPEED;
     }
     if (player->right)
     {
-        player->x -= sin_angle * speed;
-        player->y += cos_angle * speed;
+         if (is_touch_wall(player->x  - sin_angle * SPEED, player->y  + cos_angle * SPEED,game))
+            return;
+        player->x -= sin_angle * SPEED;
+        player->y += cos_angle * SPEED;
     }
 }
-
 
 bool is_touch_wall(float x_ray,float y_ray,t_data* data)
 {
     int x = x_ray / BLOCK;
     int y = y_ray / BLOCK;
-
     if (data->map[y][x] == '1')
         return (true);
     return (false);
     
 }
 
-void draw_line(t_data* data,float start_x)
-{
-    float cos_angle = cos(start_x);
-    float sin_angle = sin(start_x);
-    float ray_x = data->player.x;
-    float ray_y = data->player.y;
+float distance(float x, float y){
+    return sqrt(x * x + y * y);
+}
 
-    while(!is_touch_wall(ray_x, ray_y, data))
+float fixed_dist(float x1, float y1, float x2, float y2, t_data *game)
+{
+    float delta_x = x2 - x1;
+    float delta_y = y2 - y1;
+    float angle = atan2(delta_y, delta_x) - game->player.angle;
+    float fix_dist = distance(delta_x, delta_y) * cos(angle);
+    return fix_dist;
+}
+
+void draw_view_ray(float ray_x,float ray_y,int i,t_data* data)
+{
+
+    float dist;
+    float hiegh;
+
+    dist = fixed_dist(data->player.x,data->player.y,ray_x,ray_y,data);
+    hiegh = (BLOCK / dist) * (WIETH / 2);
+    int start_y = (HIGTH - hiegh) / 2;
+    int end = start_y + hiegh;
+    
+    while (start_y < end)
     {
-        put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
-        ray_x += cos_angle;
-        ray_y += sin_angle;
+       put_pixel_into_frame(i,start_y,data,0xFFA500);
+       start_y++;
     }
+}
+
+void draw_ray(t_data* data,float start_x,int i)
+{
+    float cos_angle;
+    float sin_angle;
+    float ray_x;
+    float ray_y;
+
+    
+    ray_x = data->player.x;
+    ray_y = data->player.y;
+    cos_angle = cos(start_x);
+    sin_angle = sin(start_x);
+        while(!is_touch_wall(ray_x, ray_y, data))
+        {
+            //put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
+            ray_x += cos_angle;
+            ray_y += sin_angle;
+        }
+   
+    draw_view_ray(ray_x,ray_y,i,data);
 }
 
 int ft_performent(t_data *data)
 {
-    int i = 0;
-    float fraction = PI / 3 / WIETH;
-    float start_x = data->player.angle - PI / 6;
+    float i = 0;
+    t_player* player;
+
+    player = &data->player;
+    double fraction = (PI / 3) / WIETH;
+    float start_x = player->angle - (PI / 6);
 
     clear_screen(data);
-    move_player(data);
-    draw_squrw(data->player.y,data->player.x,data,1,0xFFC0CB);
-    draw_map(data);
+    //move_player(player,data);
+    draw_squrw(player->y,player->x,data,0,0xFFC0CB);
+    //draw_map(data);
 
     while (i < WIETH)
     {
-        draw_line(data, start_x);
+        draw_ray(data, start_x,i);
         start_x += fraction;
         i++;
     }
@@ -267,12 +313,3 @@ int main(void)
 // Pink: 0xFFC0CB
 // Brown: 0xA52A2A
 // Gold: 0xFFD700
-// Silver: 0xC0C0C0 (same as Light Grey, often)
-// Navy Blue: 0x000080
-// Teal: 0x008080
-// Maroon: 0x800000
-// Olive: 0x808000
-// Lime: 0x00FF00 (same as Green)
-// Aqua: 0x00FFFF (same as Cyan)
-// Coral: 0xFF7F50
-// Indigo: 0x4B0082

@@ -1,5 +1,5 @@
 NAME = cub
-SRC = main.c
+SRC = main_map.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
