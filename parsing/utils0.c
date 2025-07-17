@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 21:00:00 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/14 13:14:10 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:40:17 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,10 @@ void	allocate_map(char *all_lines, t_data *data)
 	char	**lines;
 	int		index;
 
-	printf("true ?? : %d\n", data->f_newline);
 	if (data->f_newline)
 	{
-		printf("found new line in the map\n");
-		exit(EXIT_FAILURE);
+		free(all_lines);
+		free_error(data, "❌ Error\nNewline encountered in MAP");
 	}
 	lines = ft_split(all_lines, '\n');
 	free(all_lines);
@@ -57,6 +56,7 @@ void	allocate_map(char *all_lines, t_data *data)
 	data->map_all[index] = NULL;
 	free_args(lines);
 }
+
 void  reach_map(char *line, t_data *data, bool reach)
 {
 	if (line[0] == ' ' || line[0] == '1')
@@ -84,8 +84,7 @@ void	read_file(char **av, t_data *data)
 			reach = true;
 		if (reach && strcmp(line, "\n") == 0)
 			data->f_newline = true;
-		
-		// reach_map(line, data, reach);
+		//reach_map(line, data, reach);
 		else if (strcmp(line, "\n") != 0)
 		{
 			all_lines = join(all_lines, line);

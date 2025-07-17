@@ -9,7 +9,7 @@ PARSER = parsing
 
 
 SRCS = main.c  $(PARSER)/get_next_line.c $(PARSER)/free_error.c $(PARSER)/utils0.c \
-		$(PARSER)/utils1.c $(PARSER)/parse_config.c $(PARSER)/parse_config1.c
+		$(PARSER)/utils1.c $(PARSER)/parse_config.c $(PARSER)/parse_config1.c $(PARSER)/parse_map.c
 
 OBJS = $(SRCS:.c=.o)
 

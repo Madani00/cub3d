@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:21:56 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/10 17:19:22 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/15 17:08:45 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,13 @@ int	config_color_found(t_data *data, int i)
 		return (data->find.ceiling++, 1);
 	else
 		return (0);
+}
+
+void	identifier_duplicate(t_data *data)
+{
+	if (data->find.floor > 1 || data->find.ceiling > 1 || data->find.north > 1
+		|| data->find.south > 1 || data->find.west > 1 || data->find.east > 1)
+	{
+		free_all(data, NULL, NULL, "❌ Error\nidentifier is duplicated");
+	}
 }

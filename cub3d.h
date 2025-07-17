@@ -22,21 +22,18 @@ typedef struct config
     int east;
     int floor;
     int ceiling;
-
 } t_config;
 
 typedef struct path
 {
     char *iden;
     char *pth;
-
 } t_path;
 
 typedef struct color
 {
     char *iden;
     int arr[3];
-
 } t_color;
 
 
@@ -79,6 +76,10 @@ void	check_configuration(t_data *data);
 int		config_path_found(t_data *data, int i);
 int		config_color_found(t_data *data, int i);
 void	parse_color_helper(t_data *data, char **configs, char **clr_range);
-
+void	check_map(t_data *data);
+void	adjust_map(t_data *data);
+void	valid_map(t_data *data, int i);
+int		invalid_character(char c);
+void    free_identifiers(t_data *data);
 
 #endif
