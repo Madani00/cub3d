@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:04:47 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/18 12:25:29 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:52:00 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ int	check_inputs(int ac, char *av[], t_data *data)
 	check_configuration(data);
 	check_map(data);
 	adjust_map(data);
-	print_map(data);
+	//print_map(data);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:07:20 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/15 18:49:28 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:33:13 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,6 @@ void	check_configuration(t_data *data)
 		identifier_duplicate(data);
 		i++;
 	}
+	if (data->f_newline)
+		free_all(data, NULL, NULL, "❌ Error\nNewline encountered in MAP");
 }

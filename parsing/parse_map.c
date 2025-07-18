@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:20:32 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/18 14:17:17 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:07:21 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ void	valid_map_helper(t_data *data, int i, int j)
 	if (i == 6 || j == 0 || j == (ft_strlen(data->map_all[i]) - 1) || \
 		i == data->column - 1)
 		free_all(data, NULL, NULL, "❌ Error\nMap is not closed");
-	if (data->map_all[i][j + 1] == ' ' || \
+	if (j >= ft_strlen(data->map_all[i + 1]) || \
+		j >= ft_strlen(data->map_all[i - 1]) || \
+		data->map_all[i][j + 1] == ' ' || \
 		data->map_all[i][j - 1] == ' ' || \
 		data->map_all[i + 1][j] == ' ' || \
-		data->map_all[i - 1][j] == ' ' || \
-		j >= ft_strlen(data->map_all[i + 1]) || \
-		j >= ft_strlen(data->map_all[i - 1]))
+		data->map_all[i - 1][j] == ' ')
 		free_all(data, NULL, NULL, "❌ Error\nMap is not closed");
 }
 
@@ -65,13 +65,13 @@ void	adjust_map(t_data *data)
 
 	i = 5;
 	k = 0;
-	data->map = malloc(sizeof(char *) * (data->column - 5));
+	data->map = malloc(sizeof(char *) * (data->column - 5)); // 5
 	if (!data->map)
 		exit(EXIT_FAILURE);
 	while (data->map_all[++i])
 	{
 		j = -1;
-		data->map[k] = malloc(sizeof(char) * data->long_line);
+		data->map[k] = malloc(sizeof(char) * data->long_line + 1);
 		while (data->map_all[i][++j])
 			data->map[k][j] = data->map_all[i][j];
 		while (j < data->long_line)

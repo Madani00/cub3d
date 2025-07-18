@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 21:00:00 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/18 14:19:31 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:30:06 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	allocate_map(char *all_lines, t_data *data)
 	char	**lines;
 	int		index;
 
-	if (data->f_newline)
-	{
-		free(all_lines);
-		free_error(data, "❌ Error\nNewline encountered in MAP");
-	}
+	// if (data->f_newline)
+	// {
+	// 	free(all_lines);
+	// 	free_error(data, "❌ Error\nNewline encountered in MAP");
+	// }
 	lines = ft_split(all_lines, '\n');
 	free(all_lines);
 	data->map_all = malloc(sizeof(char *) * (data->column + 1));
