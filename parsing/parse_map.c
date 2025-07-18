@@ -6,51 +6,49 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:20:32 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/15 19:49:40 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:17:17 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-int invalid_character(char c)
+int	invalid_character(char c)
 {
 	if (c != ' ' && c != '1' && c != 'N' \
 		&& c != 'S' && c != 'E' && c != 'W' && c != '0')
-			return (1);
+		return (1);
 	return (0);
 }
-void has_onlyspaces(t_data *data, int i)
+
+void	valid_map_helper(t_data *data, int i, int j)
 {
-	int j;
-	
-	j = 0;
-	while (data->map_all[i][j])
-	{
-		if (data->map_all[i][j] != ' ' && data->map_all[i][j] != '\t')
-			return ;
-		j++;
-	}
-	free_all(data, NULL, NULL, "❌ Error\nline has only spaces");
+	if (data->map_all[i][j] != '0')
+		data->orientation++;
+	if (i == 6 || j == 0 || j == (ft_strlen(data->map_all[i]) - 1) || \
+		i == data->column - 1)
+		free_all(data, NULL, NULL, "❌ Error\nMap is not closed");
+	if (data->map_all[i][j + 1] == ' ' || \
+		data->map_all[i][j - 1] == ' ' || \
+		data->map_all[i + 1][j] == ' ' || \
+		data->map_all[i - 1][j] == ' ' || \
+		j >= ft_strlen(data->map_all[i + 1]) || \
+		j >= ft_strlen(data->map_all[i - 1]))
+		free_all(data, NULL, NULL, "❌ Error\nMap is not closed");
 }
 
-void valid_map(t_data *data, int i)
+void	valid_map(t_data *data, int i)
 {
 	int	j;
-	
+
 	j = 0;
 	while (data->map_all[i][j])
 	{
 		if (ft_strchr("ENSW0", data->map_all[i][j]))
 		{
-			if (data->map_all[i][j] != '0')
-				data->orientation++;
-			if (i == 6 || j == 0 || j == (ft_strlen(data->map_all[i]) - 1) || i == data->column - 1)
-				free_all(data, NULL, NULL, "❌ Error\nMap is not surrended by walls");
-			if (data->map_all[i][j + 1] == ' ' || data->map_all[i][j - 1] == ' ' || data->map_all[i + 1][j] == ' ' || data->map_all[i - 1][j] == ' ' || j >= ft_strlen(data->map_all[i+1]) || j >= ft_strlen(data->map_all[i-1]))
-				free_all(data, NULL, NULL, "❌ Error\nMap is not surrended by walls");
-		}		
-		if (data->orientation > 1)	
-			free_all(data, NULL, NULL, "❌ Error\nMore than one player’s orientation");
+			valid_map_helper(data, i, j);
+		}
+		if (data->orientation > 1)
+			free_all(data, NULL, NULL, "❌ Error\nMore than one orientation");
 		if (invalid_character(data->map_all[i][j]))
 			free_all(data, NULL, NULL, "❌ Error\nInvalid character found");
 		j++;
@@ -59,12 +57,11 @@ void valid_map(t_data *data, int i)
 	}
 }
 
-
 void	adjust_map(t_data *data)
 {
-	int i;
-	int j;
-	int k;
+	int	i;
+	int	j;
+	int	k;
 
 	i = 5;
 	k = 0;
@@ -87,21 +84,16 @@ void	adjust_map(t_data *data)
 	data->map[k] = NULL;
 }
 
-void check_map(t_data *data)
+void	check_map(t_data *data)
 {
-	int i;
+	int	i;
 
-	// printf("\n%d\n", data->column);
 	i = 6;
 	while (data->map_all[i])
 	{
-		//has_onlyspaces(data, i);
 		valid_map(data, i);
-		// 	free_all(data, NULL, NULL, "❌ Error: map is not valid");
-		// else
-		// 	printf("%c : valid\n", data->map_all[i][0]);
 		i++;
 	}
-	if (data->orientation == 0)	
+	if (data->orientation == 0)
 		free_all(data, NULL, NULL, "❌ Error\nNo player orientation found");
 }

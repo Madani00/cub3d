@@ -8,7 +8,7 @@ LIBFT = ./Libft/libft.a
 PARSER = parsing
 
 
-SRCS = main.c  $(PARSER)/get_next_line.c $(PARSER)/free_error.c $(PARSER)/utils0.c \
+SRCS = main.c  $(PARSER)/get_next_line.c $(PARSER)/free_error.c $(PARSER)/read_file.c \
 		$(PARSER)/utils1.c $(PARSER)/parse_config.c $(PARSER)/parse_config1.c $(PARSER)/parse_map.c
 
 OBJS = $(SRCS:.c=.o)
@@ -20,7 +20,7 @@ $(MLXDIR)/libmlx.a:
 
 $(NAME): $(OBJS)
 		@$(MK) -C ./Libft
-		$(CC) $(CFLAGS) $(OBJS) -lX11 -lXext -lmlx -lm $(LIBFT) -o $(NAME)
+		@$(CC) $(CFLAGS) $(OBJS) -lX11 -lXext -lmlx -lm $(LIBFT) -o $(NAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -31,7 +31,7 @@ clean:
 
 fclean: clean
 		@$(MK) fclean -C ./Libft
-		$(RM) $(NAME)
+		@$(RM) $(NAME)
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:04:47 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/15 19:05:34 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:25:29 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,36 @@ void print_map(t_data *data)
 		i++;
 	}
 	
+}
+
+int	num_length(char *str)
+{
+	int	len;
+
+	len = ft_strlen(str);
+	if (len > 3 && str[0] != '0')
+		return (1);
+	else if (len < 3)
+		return (0);
+	if (ft_strncmp(str, "255", 3) >= 0)
+		return (1);
+	return (0);
+}
+
+int	ft_isnum(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (num_length(&str[i]))
+		return (1);
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	check_inputs(int ac, char *av[], t_data *data)
