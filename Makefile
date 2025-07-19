@@ -1,5 +1,5 @@
 NAME = cub
-SRC = main_map.c
+SRC = raycasting/main.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

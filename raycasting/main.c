@@ -1,5 +1,4 @@
-#include "cub.h"   
-#include <stdlib.h>
+#include "../include/raycasting.h"   
 
 bool is_touch_wall(float x_ray,float y_ray,t_data* data,int block);
 void move_player_map(t_data* game,float cos_angle,float sin_angle);
@@ -209,56 +208,56 @@ int key_release(int keycode, t_data *data)
     return (0);
 }
 
-bool is_correct_move(t_data* game,float sin_angle,float cos_angle,int block)
+bool is_correct_move(t_data* game,float sin_angle,float cos_angle)
 {
     t_player* player;
 
     player = &game->player;
     if (player->up)
     {
-        if (is_touch_wall(player->x  + cos_angle * SPEED,player->y  +  sin_angle * SPEED,game,block))
+        if (is_touch_wall(player->x  + cos_angle * SPEED,player->y  +  sin_angle * SPEED,game,BLOCK))
             return (true);
     }
     if (player->down)
     {
-        if (is_touch_wall(player->x  - cos_angle * SPEED,player->y  - sin_angle * SPEED,game,block))
+        if (is_touch_wall(player->x  - cos_angle * SPEED,player->y  - sin_angle * SPEED,game,BLOCK))
             return(true);
     }
     if (player->left)
     {
-        if (is_touch_wall(player->x  + sin_angle * SPEED,player->y  - sin_angle * SPEED,game,block))
+        if (is_touch_wall(player->x  + sin_angle * SPEED,player->y  - sin_angle * SPEED,game,BLOCK))
             return(true);
     }
     if (player->right)
     {
-         if (is_touch_wall(player->x  - sin_angle * SPEED, player->y  + cos_angle * SPEED,game,block))
+         if (is_touch_wall(player->x  - sin_angle * SPEED, player->y  + cos_angle * SPEED,game,BLOCK))
             return(true);
     }
 }
 
-bool is_correct_move_map(t_data* game,float sin_angle,float cos_angle,int block)
+bool is_correct_move_map(t_data* game,float sin_angle,float cos_angle)
 {
     t_player* player;
 
     player = &game->player;
     if (player->up)
     {
-        if (is_touch_wall(player->map_x  + cos_angle * SPEED,player->map_y  +  sin_angle * SPEED,game,block))
+        if (is_touch_wall(player->map_x  + cos_angle * SPEED,player->map_y  +  sin_angle * SPEED,game,BLOCK_MAP))
             return (true);
     }
     if (player->down)
     {
-        if (is_touch_wall(player->map_x  - cos_angle * SPEED,player->map_y  - sin_angle * SPEED,game,block))
+        if (is_touch_wall(player->map_x  - cos_angle * SPEED,player->map_y  - sin_angle * SPEED,game,BLOCK_MAP))
             return(true);
     }
     if (player->left)
     {
-        if (is_touch_wall(player->map_x  + sin_angle * SPEED,player->map_y  - sin_angle * SPEED,game,block))
+        if (is_touch_wall(player->map_x  + sin_angle * SPEED,player->map_y  - sin_angle * SPEED,game,BLOCK_MAP))
             return(true);
     }
     if (player->right)
     {
-         if (is_touch_wall(player->map_x  - sin_angle * SPEED, player->map_y  + cos_angle * SPEED,game,block))
+         if (is_touch_wall(player->map_x  - sin_angle * SPEED, player->map_y  + cos_angle * SPEED,game,BLOCK_MAP))
             return(true);
     }
 }
@@ -274,7 +273,7 @@ void move_angle(t_player* player)
 void move_player(t_data* game,float cos_angle,float sin_angle)
 {
     move_player_map(game,cos_angle,sin_angle);
-    if (is_correct_move(game,sin_angle,cos_angle,BLOCK))
+    if (is_correct_move(game,sin_angle,cos_angle))
         return;
     move_angle(&game->player);
     if (game->player.up)
@@ -400,7 +399,7 @@ void draw_ray(t_data* data,float start_x,int i)
 void move_player_map(t_data* game,float cos_angle,float sin_angle)
 {
 
-    if (is_correct_move_map(game,sin_angle,cos_angle,BLOCK_MAP))
+    if (is_correct_move_map(game,sin_angle,cos_angle))
         return;
     move_angle(&game->player);
     game->player.map_x = (game->player.x / BLOCK);
