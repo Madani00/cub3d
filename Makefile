@@ -1,40 +1,23 @@
-NAME = cub3D
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-RM = rm -f
-MK = make
-MLXDIR = minilibx-linux
-LIBFT = ./Libft/libft.a
-PARSER = parsing
+NAME = cub
+SRC = raycasting/main.c
+OBJ = $(SRC:.c=.o)
 
+all: $(NAME)
 
-SRCS = main.c  $(PARSER)/get_next_line.c $(PARSER)/free_error.c $(PARSER)/read_file.c \
-		$(PARSER)/utils1.c $(PARSER)/parse_config.c $(PARSER)/parse_config1.c $(PARSER)/parse_map.c
+CFLAGS = 
 
-OBJS = $(SRCS:.c=.o)
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -L./minilibx-linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -o $(NAME)
 
-all: $(MLXDIR)/libmlx.a $(NAME)
-
-$(MLXDIR)/libmlx.a:
-	make -C $(MLXDIR)
-
-$(NAME): $(OBJS)
-		@$(MK) -C ./Libft
-		@$(CC) $(CFLAGS) $(OBJS) -lX11 -lXext -lmlx -lm $(LIBFT) -o $(NAME)
-
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) -I./includes -I./minilibx-linux -I/usr/include -c $< -o $@
 
 clean:
-		@$(MK) clean -C ./Libft
-		@${RM} ${OBJS}
+	rm -rf $(OBJ)
 
 fclean: clean
-		@$(MK) fclean -C ./Libft
-		@$(RM) $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
-
-.SECONDARY:
+.PHONY: all fclean clean re

@@ -1,5 +1,5 @@
 /*
-** mlx_get_pars_addr.c for MiniLibX in raytraceur
+** mlx_get_data_addr.c for MiniLibX in raytraceur
 ** 
 ** Made by Charlie Root
 ** Login   <ol@epitech.net>
@@ -13,7 +13,7 @@
 #include	"mlx_int.h"
 
 
-char	*mlx_get_pars_addr(t_img *img,int *bits_per_pixel,
+char	*mlx_get_data_addr(t_img *img,int *bits_per_pixel,
 			   int *size_line,int *endian)
 {
   *bits_per_pixel = img->bpp;
