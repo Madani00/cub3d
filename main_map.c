@@ -78,7 +78,7 @@ void put_pixel_into_frame(int x, int y, t_data* data, int color)
     {
         if (x >= WIETH || y >= HIGTH || x < 0 || y < 0)
             return;
-        index = y * data->len_line + x * data->bpp / 8;
+        index = y * data->len_line + x * 4;
         data->data[index] = color & 0xFF;
         data->data[index + 1] = (color >> 8) & 0xFF;
         data->data[index + 2] = (color >> 16) & 0xFF;
@@ -145,23 +145,31 @@ void clear_screen(t_data* data)
     int i, j;
     data->inside_win = true;
     data->iside_win_map = true;
-    for (i = 0; i < HIGTH/2; i++)
+    int color_ciel = 255;
+    int color_floor = 13056;
+    for (i = 0; i < (HIGTH + 90)/2; i++)
     {
+       if (i % 2 == 0 && color_ciel != 0)
+            color_ciel--;
+        for (j = 1; j < WIETH; j++)
+        {
+            put_pixel_into_frame(j, i, data, color_ciel);
+        }
+    }
+    for (i = (HIGTH + 90)/2; i < HIGTH; i++)
+    {
+        if (i % 5 == 0)
+            color_floor++;
         for (j = 0; j < WIETH; j++)
-            put_pixel_into_frame(j, i, data, 255);
+            put_pixel_into_frame(j, i, data,color_floor);
     }
-    for (i = HIGTH/2; i < HIGTH; i++)
-    {
-        for (j = 0; j < WIETH; j++)
-            put_pixel_into_frame(j, i, data,0x800080);
-    }
-    data->inside_win = false;
-    for (i = 0; i < HIGTH_MAP; i++)
-    {
-        for (j = 0; j < WIETH_MAP; j++)
-            put_pixel_into_frame(j, i, data, 0x00000000);
-    }
-    data->inside_win = true;
+    // data->inside_win = false;
+    // for (i = 0; i < HIGTH_MAP; i++)
+    // {
+    //     for (j = 0; j < WIETH_MAP; j++)
+    //         put_pixel_into_frame(j, i, data, 0x00000000);
+    // }
+    // data->inside_win = true;
 }
 
 int key_press(int keycode, t_data *data)
@@ -320,22 +328,44 @@ float fixed_dist(float x1, float y1, float x2, float y2, t_data *game)
     return fix_dist;
 }
 
+int get_volum_color_base_dist(double dis)
+{
+    unsigned int r,g,b;
+    
+    
+    dis /= 50;
+
+    if (dis < 1)
+        dis = 1;
+
+    r = 255/dis;
+    g = 255/dis;
+    b = 255/dis;
+
+    return (r << 16 | g << 8 | b);
+}
+
 void draw_view_ray(float ray_x,float ray_y,int i,t_data* data)
 {
-    float dist;
+    double dist;
     float hiegh;
     int start_y;
     int end;
 
     dist = fixed_dist(data->player.x,data->player.y,ray_x,ray_y,data);
-    hiegh = (BLOCK / dist) * (WIETH / 2);
-    start_y = (HIGTH - hiegh) / 2;
+    hiegh = (BLOCK / dist) * WIETH ;
+    start_y = ((HIGTH + 90)- hiegh) / 2;
     end = start_y + hiegh;
     while (start_y < end)
     {
-       put_pixel_into_frame(i,start_y,data,0xFFA590);
+       put_pixel_into_frame(i,start_y,data,get_volum_color_base_dist(dist));
        start_y++;
     }
+}
+
+void get_intersection(t_data* data,float* ray_x,float* ray_y)
+{
+
 }
 
 void draw_ray(t_data* data,float start_x,int i)
@@ -353,11 +383,18 @@ void draw_ray(t_data* data,float start_x,int i)
     data->inside_win = true;
     while(!is_touch_wall(ray_x, ray_y, data,BLOCK))
     {
-        //put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
+        if (D_2)
+        {
+            get_intersection(data,&ray_x,&ray_y);
+            put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
+
+        }
         ray_x += cos_angle;
         ray_y += sin_angle;
     }
-    draw_view_ray(ray_x,ray_y,i,data);
+    //put_pixel_into_frame(ray_x, ray_y, data, 400);
+    if (!D_2)
+        draw_view_ray(ray_x,ray_y,i,data);
 }
 
 void move_player_map(t_data* game,float cos_angle,float sin_angle)
@@ -372,7 +409,7 @@ void move_player_map(t_data* game,float cos_angle,float sin_angle)
     game->player.map_y *= BLOCK_MAP;
 }
 
-void draw_ray_map(t_data* data,float start_x,int i)
+void draw_ray_map(t_data* data,float start_x)
 {
     float cos_angle;
     float sin_angle;
@@ -394,6 +431,8 @@ void draw_ray_map(t_data* data,float start_x,int i)
         ray_x += cos_angle;
         ray_y += sin_angle;
     }
+    //put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
+
     data->inside_win = true;
 }
 
@@ -419,12 +458,12 @@ int ft_performent(t_data *data)
         draw_ray(data, start_x,i);
         if (i < WIETH_MAP)
         {
-            draw_ray_map(data,start_x_map,++j);
+            draw_ray_map(data,start_x_map);
             start_x_map += fraction_map;
         }
         start_x += fraction;
     }
-    mlx_put_image_to_window(data->mlx,data->win,data->img,0,0);
+     mlx_put_image_to_window(data->mlx,data->win,data->img,0,0);
     mlx_put_image_to_window(data->mlx,data->win,data->img_map,0,(HIGTH - HIGTH_MAP));
     return (0);
 }

@@ -10,6 +10,7 @@
 #include "minilibx-linux/mlx.h"
 
 # define BLOCK 32
+# define D_2 0
 # define BLOCK_MAP 8
 # define WIETH (BLOCK * 24)
 # define HIGTH (BLOCK * 19)
