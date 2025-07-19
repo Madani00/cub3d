@@ -112,7 +112,6 @@ t_pars *check_inputs(int ac, char *av[], t_pars *data)
 	adjust_map(data);
 	//print_map(data);
 	
-     printf(" final direction is:  %s \n", data->direction);
 	//  t_color *array = get_right_color(data, "C");
 	//  printf(" COLOR 1 :  %d \n", array->arr[0]);
 	//  printf(" COLOR 2 :  %d \n", array->arr[1]);

@@ -3,12 +3,12 @@
 bool is_touch_wall(float x_ray,float y_ray,t_data* data,int block);
 void move_player_map(t_data* game,float cos_angle,float sin_angle);
 
-void init_player(t_player*  player)
+void init_player(t_player*  player,char** map)
 {
-    player->x = WIETH / 2;
-    player->y = HIGTH / 2; 
-    player->map_x = WIETH_MAP / 2;
-    player->map_y = HIGTH_MAP / 2;
+    int i;
+    int j;
+
+    i = 0;   
     player->angle = PI / 2; 
     player->turn_left = false;
     player->turn_right = false;
@@ -16,6 +16,23 @@ void init_player(t_player*  player)
     player->left = false;
     player->right = false;
     player->up = false;
+    while (map && map[i] != NULL)
+    {
+        j = 0;
+        while (map[i][j] != '\0')
+        {
+            if (map[i][j] == 'N')
+            {
+                player->x = j * BLOCK;
+                player->y = i * BLOCK; 
+                player->map_x = j * BLOCK_MAP;
+                player->map_y = i * BLOCK_MAP;
+                return;
+            }
+        j++; 
+        }
+        i++;
+    }
 }
 
 int close_window(t_data* game)
@@ -30,19 +47,18 @@ int close_window(t_data* game)
 
 void init_game(t_data* data,t_pars* input)
 {
-    init_player(&data->player);
     data->map = input->map;
+    init_player(&data->player,data->map);
     data->height = (input->column - 6) * BLOCK;
     data->width = input->long_line * BLOCK;
     data->hei_map = (input->column - 6) * BLOCK_MAP;
     data->wid_map = input->long_line * BLOCK_MAP;
-    // data.color_c = get_color(input,"C");
-    // data.color_floor = get_color(input,"F");
-    // data.diraction_player = input.direction;
+
+
     data->mlx = mlx_init();
-    data->win = mlx_new_window(data->mlx, WIETH, HIGTH, "CUB3D");
-    data->img = mlx_new_image(data->mlx, WIETH, HIGTH);
-    data->img_map =  mlx_new_image(data->mlx, WIETH_MAP, HIGTH_MAP);
+    data->win = mlx_new_window(data->mlx, data->width, data->height, "CUB3D");
+    data->img = mlx_new_image(data->mlx,data->width, data->height);
+    data->img_map =  mlx_new_image(data->mlx, data->wid_map, data->hei_map);
     data->data = mlx_get_data_addr(data->img, &data->bpp, &data->len_line, &data->endiane);
     data->data_map = mlx_get_data_addr(data->img_map, &data->bpp_map, &data->len_line_map, &data->endiane_map);
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
@@ -60,7 +76,7 @@ void put_pixel_into_frame(int x, int y, t_data* data, int color)
 
     if (data->inside_win)
     {
-        if (x >= WIETH || y >= HIGTH || x < 0 || y < 0)
+        if (x >=  data->width|| y >= data->height || x < 0 || y < 0)
             return;
         index = y * data->len_line + x * 4;
         data->data[index] = color & 0xFF;
@@ -69,7 +85,7 @@ void put_pixel_into_frame(int x, int y, t_data* data, int color)
     }
     if (data->iside_win_map)
     {
-        if (x >= WIETH_MAP || y >= HIGTH_MAP || x < 0 || y < 0)
+        if (x >= data->wid_map || y >= data->hei_map || x < 0 || y < 0)
             return;
         index = y * data->len_line_map + x * data->bpp_map / 8;
         data->data_map[index] = color & 0xFF;
@@ -80,16 +96,16 @@ void put_pixel_into_frame(int x, int y, t_data* data, int color)
 
 void draw_squrw(int y,int x,t_data *game,int size,int color)
 {
-    if (game->inside_win)
-    {
-        for (int i = 0;i < size;i++)
-        {
-            for (int  j = 0;j < size;j++)
-            {
-                put_pixel_into_frame(x + j,y + i,game,color);
-            }
-        }
-    }
+    // if (game->inside_win)
+    // {
+    //     for (int i = 0;i < size;i++)
+    //     {
+    //         for (int  j = 0;j < size;j++)
+    //         {
+    //             put_pixel_into_frame(x + j,y + i,game,color);
+    //         }
+    //     }
+    // }
     if (game->iside_win_map)
     {
         size = BLOCK_MAP;
@@ -130,30 +146,27 @@ void clear_screen(t_data* data)
     data->inside_win = true;
     data->iside_win_map = true;
     int color_ciel = 255;
-    // 255
-    //0 
-    //299
     int color_floor = 13056;
-    for (i = 0; i < (HIGTH + 90)/2; i++)
+    for (i = 0; i < (data->height + 90)/2; i++)
     {
        if (i % 2 == 0 && color_ciel != 0)
             color_ciel--;
-        for (j = 1; j < WIETH; j++)
+        for (j = 1; j < data->width; j++)
         {
             put_pixel_into_frame(j, i, data, color_ciel);
         }
     }
-    for (i = (HIGTH + 90)/2; i < HIGTH; i++)
+    for (i = (data->height + 90)/2; i < data->height; i++)
     {
         if (i % 5 == 0)
             color_floor++;
-        for (j = 0; j < WIETH; j++)
+        for (j = 0; j < data->width; j++)
             put_pixel_into_frame(j, i, data,color_floor);
     }
     // data->inside_win = false;
-    // for (i = 0; i < HIGTH_MAP; i++)
+    // for (i = 0; i < data->hei_map; i++)
     // {
-    //     for (j = 0; j < WIETH_MAP; j++)
+        // for (j = 0; j < data->wid_map; j++)
     //         put_pixel_into_frame(j, i, data, 0x00000000);
     // }
     // data->inside_win = true;
@@ -221,6 +234,7 @@ bool is_correct_move(t_data* game,float sin_angle,float cos_angle)
          if (is_touch_wall(player->x  - sin_angle * SPEED, player->y  + cos_angle * SPEED,game,BLOCK))
             return(true);
     }
+    return (false);
 }
 
 bool is_correct_move_map(t_data* game,float sin_angle,float cos_angle)
@@ -248,6 +262,7 @@ bool is_correct_move_map(t_data* game,float sin_angle,float cos_angle)
          if (is_touch_wall(player->map_x  - sin_angle * SPEED, player->map_y  + cos_angle * SPEED,game,BLOCK_MAP))
             return(true);
     }
+    return (false);
 }
 
 void move_angle(t_player* player)
@@ -340,8 +355,8 @@ void draw_view_ray(float ray_x,float ray_y,int i,t_data* data)
     int end;
 
     dist = fixed_dist(data->player.x,data->player.y,ray_x,ray_y,data);
-    hiegh = (BLOCK / dist) * WIETH ;
-    start_y = ((HIGTH + 90)- hiegh) / 2;
+    hiegh = (BLOCK / dist) * data->width ;
+    start_y = ((data->height + 90)- hiegh) / 2;
     end = start_y + hiegh;
     while (start_y < end)
     {
@@ -379,7 +394,6 @@ void draw_ray(t_data* data,float start_x,int i)
         ray_x += cos_angle;
         ray_y += sin_angle;
     }
-    //put_pixel_into_frame(ray_x, ray_y, data, 400);
     if (!D_2)
         draw_view_ray(ray_x,ray_y,i,data);
 }
@@ -418,8 +432,6 @@ void draw_ray_map(t_data* data,float start_x)
         ray_x += cos_angle;
         ray_y += sin_angle;
     }
-    //put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
-
     data->inside_win = true;
 }
 
@@ -433,28 +445,27 @@ int ft_performent(t_data *data)
     player = &data->player;
     i = -1;
     j = -1;
-    fraction = (PI / 3) / WIETH;
-    fraction_map = (PI / 3) / WIETH_MAP;
+    fraction = (PI / 3) / data->width;
+    fraction_map = (PI / 3) / data->wid_map;
     start_x = player->angle - (PI / 6);
     start_x_map = start_x;
-    clear_screen(data);
-    move_player(data,cos(player->angle),sin(player->angle));
+   clear_screen(data);
+   move_player(data,cos(player->angle),sin(player->angle));
     draw_map(data);
-    while (++i < WIETH)
+    while (++i < data->width)
     {
         draw_ray(data, start_x,i);
-        if (i < WIETH_MAP)
+        if (i < data->wid_map)
         {
             draw_ray_map(data,start_x_map);
             start_x_map += fraction_map;
         }
         start_x += fraction;
     }
-     mlx_put_image_to_window(data->mlx,data->win,data->img,0,0);
-    mlx_put_image_to_window(data->mlx,data->win,data->img_map,0,(HIGTH - HIGTH_MAP));
+    mlx_put_image_to_window(data->mlx,data->win,data->img,0,0);
+    mlx_put_image_to_window(data->mlx,data->win,data->img_map,0,(data->height - data->hei_map));
     return (0);
 }
-
 
 int main(int ac, char **av)
 {
@@ -465,33 +476,8 @@ int main(int ac, char **av)
     if (!input)
         return (1);
 
-    printf("%d \n", input->column);
-    // printf(" direction:  %s \n", input->direction);
-	//  t_color *array = get_right_color(input, "C");
-	//  printf(" COLOR 1 :  %d \n", array->arr[0]);
-	//  printf(" COLOR 2 :  %d \n", array->arr[1]);
-	//  printf(" COLOR 2 :  %d \n", array->arr[2]);
+    init_game(&data,input);
     
-    // // color
-    // input.color[0].iden = // C aw F
-    // // range of color in the array
-    // input.color[0].arr[0] = 255
-    // input.color[0].arr[1] = 30
-    // input.color[0].arr[2] = 89 
-
-    // // paths
-    // input.path[0].iden = // EA
-    // input.path[1].iden = // WE
-    // input.path[2].iden = // NO
-    // input.path[3].iden = // SO
-
-    // input.path[0].path = // /texture
-    // input.path[1].path = // /texture
-    // input.path[2].path = // /texture
-    // input.path[3].path = // /texture
-
-
-    init_game(&data, input);
     mlx_hook(data.win, 2, 1L << 0, key_press, &data);
     mlx_hook(data.win, 3, 1L << 1, key_release, &data);
     mlx_loop_hook(data.mlx, ft_performent, &data);

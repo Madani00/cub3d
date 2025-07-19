@@ -13,10 +13,6 @@
 # define BLOCK 32
 # define D_2 0
 # define BLOCK_MAP 8
-# define WIETH (BLOCK * 24)
-# define HIGTH (BLOCK * 19)
-# define WIETH_MAP (24 * BLOCK_MAP)
-# define HIGTH_MAP (19 * BLOCK_MAP)
 # define ANGLE_SPEED 0.01
 # define SPEED 1
 
@@ -71,7 +67,7 @@ typedef struct s_data
 
 bool is_touch_wall(float x_ray,float y_ray,t_data* data,int block);
 void move_player_map(t_data* game,float cos_angle,float sin_angle);
-void init_player(t_player*  player);
+void init_player(t_player*  player,char** map);
 int close_window(t_data* game);
 char **get_map(void);
 void init_game(t_data* data,t_pars* input);
