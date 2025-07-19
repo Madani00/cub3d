@@ -1,4 +1,4 @@
-#include "../include/raycasting.h"   
+#include "../include/cub.h"   
 
 bool is_touch_wall(float x_ray,float y_ray,t_data* data,int block);
 void move_player_map(t_data* game,float cos_angle,float sin_angle);
@@ -28,37 +28,13 @@ int close_window(t_data* game)
     return (0);
 }
 
-char **get_map(void)
-{
-   char **map = malloc(sizeof(char *) * 25); // 24 rows + NULL
-
-    map[0] =  "111111111111111111111111";
-    map[1] =  "100100000000000000000001";
-    map[2] =  "100000100100011111100001";
-    map[3] =  "100000100000000100000001";
-    map[4] =  "100000000000000000000001";
-    map[5] =  "100000010000000010000001";
-    map[6] =  "100001000000001000000001";
-    map[7] =  "100000000000000000000001";
-    map[8] =  "100000000000000000000001";
-    map[9] =  "100000000000000000000001";
-    map[10] = "100000000000000000000001";
-    map[11] = "100000000000000000000001";
-    map[12] = "100000000000000000000001";
-    map[13] = "100100100111111000000001";
-    map[14] = "100100100000000001111001";
-    map[15] = "100000100000000000000001";
-    map[16] = "100000111101110011111001";
-    map[17] = "100000000000000000000001";
-    map[18] = "111111111111111111111111";
-    map[19] = NULL;
-        return (map);
-}
-
-void init_game(t_data* data)
+void init_game(t_data* data,t_pars* input)
 {
     init_player(&data->player);
-    data->map = get_map();
+    // data->map = input->map;
+    // data.color_c = get_color(input,"C");
+    // data.color_floor = get_color(input,"F");
+    // data.diraction_player = input.direction;
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, WIETH, HIGTH, "CUB3D");
     data->img = mlx_new_image(data->mlx, WIETH, HIGTH);
@@ -145,6 +121,9 @@ void clear_screen(t_data* data)
     data->inside_win = true;
     data->iside_win_map = true;
     int color_ciel = 255;
+    // 255
+    //0 
+    //299
     int color_floor = 13056;
     for (i = 0; i < (HIGTH + 90)/2; i++)
     {
@@ -470,8 +449,30 @@ int ft_performent(t_data *data)
 int main(void)
 {
     t_data data;
+    t_pars input;
 
-    init_game(&data);
+    //  if (check_inputs(ac, av, &input))
+    //     return (1);
+    // // color
+    // input.color[0].iden = // C aw F
+    // // range of color in the array
+    // input.color[0].arr[0] = 255
+    // input.color[0].arr[1] = 30
+    // input.color[0].arr[2] = 89 
+
+    // // paths
+    // input.path[0].iden = // EA
+    // input.path[1].iden = // WE
+    // input.path[2].iden = // NO
+    // input.path[3].iden = // SO
+
+    // input.path[0].path = // /texture
+    // input.path[1].path = // /texture
+    // input.path[2].path = // /texture
+    // input.path[3].path = // /texture
+
+
+    init_game(&data,&input);
     mlx_hook(data.win, 2, 1L << 0, key_press, &data);
     mlx_hook(data.win, 3, 1L << 1, key_release, &data);
     mlx_loop_hook(data.mlx, ft_performent, &data);

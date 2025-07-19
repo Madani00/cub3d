@@ -7,7 +7,8 @@
 #include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
-#include "../minilibx-linux/mlx.h"
+#include "cub3d.h"
+// #include "../minilibx-linux/mlx.h"
 
 # define BLOCK 32
 # define D_2 0
@@ -69,7 +70,7 @@ void move_player_map(t_data* game,float cos_angle,float sin_angle);
 void init_player(t_player*  player);
 int close_window(t_data* game);
 char **get_map(void);
-void init_game(t_data* data);
+void init_game(t_data* data,t_pars* input);
 void put_pixel_into_frame(int x, int y, t_data* data, int color);
 void draw_squrw(int y,int x,t_data *game,int size,int color);
 void draw_map(t_data* data);
