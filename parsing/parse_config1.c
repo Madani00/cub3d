@@ -6,13 +6,13 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:21:56 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/15 17:08:45 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-int	config_path_found(t_data *data, int i)
+int	config_path_found(t_pars *data, int i)
 {
 	if (ft_strncmp(data->map_all[i], "NO", 2) == 0)
 		return (data->find.north++, 1);
@@ -26,7 +26,7 @@ int	config_path_found(t_data *data, int i)
 		return (0);
 }
 
-int	config_color_found(t_data *data, int i)
+int	config_color_found(t_pars *data, int i)
 {
 	if (ft_strncmp(data->map_all[i], "F", 1) == 0)
 		return (data->find.floor++, 1);
@@ -36,7 +36,7 @@ int	config_color_found(t_data *data, int i)
 		return (0);
 }
 
-void	identifier_duplicate(t_data *data)
+void	identifier_duplicate(t_pars *data)
 {
 	if (data->find.floor > 1 || data->find.ceiling > 1 || data->find.north > 1
 		|| data->find.south > 1 || data->find.west > 1 || data->find.east > 1)

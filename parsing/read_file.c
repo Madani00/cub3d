@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 21:00:00 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/18 14:30:06 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	check_map_extension(char *map_file)
 	}
 }
 
-void	allocate_map(char *all_lines, t_data *data)
+void	allocate_map(char *all_lines, t_pars *data)
 {
 	char	**lines;
 	int		index;
@@ -57,7 +57,7 @@ void	allocate_map(char *all_lines, t_data *data)
 	free_args(lines);
 }
 
-void	reach_map(char *line, t_data *data, bool reach)
+void	reach_map(char *line, t_pars *data, bool reach)
 {
 	if (line[0] == ' ' || line[0] == '1')
 		reach = true;
@@ -65,7 +65,7 @@ void	reach_map(char *line, t_data *data, bool reach)
 		data->f_newline = true;
 }
 
-char	*get_first_line(int fd, t_data *data)
+char	*get_first_line(int fd, t_pars *data)
 {
 	char	*line;
 
@@ -75,7 +75,7 @@ char	*get_first_line(int fd, t_data *data)
 	return (line);
 }
 
-void	read_file(char **av, t_data *data)
+void	read_file(char **av, t_pars *data)
 {
 	char	*line;
 	int		fd;

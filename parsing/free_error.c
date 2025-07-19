@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 15:35:53 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/10 11:54:04 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_args(char **arg)
 	free(arg);
 }
 
-void	free_lines(t_data *data)
+void	free_lines(t_pars *data)
 {
 	int	i;
 
@@ -38,14 +38,14 @@ void	free_lines(t_data *data)
 	free(data->map_all);
 }
 
-void	free_error(t_data *data, char *msg)
+void	free_error(t_pars *data, char *msg)
 {
 	free(data);
 	printf("%s\n", msg);
 	exit(EXIT_FAILURE);
 }
 
-void	free_identifiers(t_data *data)
+void	free_identifiers(t_pars *data)
 {
 	int	index;
 
@@ -64,7 +64,7 @@ void	free_identifiers(t_data *data)
 	}
 }
 
-void	free_all(t_data *data, char **configs, char **range, char *msg)
+void	free_all(t_pars *data, char **configs, char **range, char *msg)
 {
 	free_identifiers(data);
 	if (configs != NULL)

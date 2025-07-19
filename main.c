@@ -7,9 +7,9 @@
 
 int main(int ac, char *av[])
 {
-    t_data data;
-
+    t_pars data;
+    
     if (check_inputs(ac, av, &data))
-        return (1);
+    return (1);
     printf("\n \n ✅ ✅ VALID VALID VALID ✅ ✅\n \n");
 }

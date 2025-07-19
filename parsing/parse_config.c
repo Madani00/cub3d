@@ -6,13 +6,13 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:07:20 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/18 14:33:13 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	parse_paths(t_data *data, int i)
+void	parse_paths(t_pars *data, int i)
 {
 	char	**configs;
 	int		numb;
@@ -34,7 +34,7 @@ void	parse_paths(t_data *data, int i)
 	free_args(configs);
 }
 
-void	parse_color_helper(t_data *data, char **configs, char **clr_range)
+void	parse_color_helper(t_pars *data, char **configs, char **clr_range)
 {
 	int	numb;
 
@@ -58,7 +58,7 @@ void	parse_color_helper(t_data *data, char **configs, char **clr_range)
 	data->color[data->index_c].iden = ft_strdup(configs[0]);
 }
 
-void	parse_color(t_data *data, int i)
+void	parse_color(t_pars *data, int i)
 {
 	char	**configs;
 	int		numb;
@@ -78,7 +78,7 @@ void	parse_color(t_data *data, int i)
 	free_args(configs);
 }
 
-int	all_identifiers_found(t_data *data)
+int	all_identifiers_found(t_pars *data)
 {
 	if (data->find.floor == 1 && data->find.ceiling == 1 && \
 		data->find.north == 1 && data->find.south == 1 && \
@@ -89,7 +89,7 @@ int	all_identifiers_found(t_data *data)
 	return (1);
 }
 
-void	check_configuration(t_data *data)
+void	check_configuration(t_pars *data)
 {
 	int	i;
 

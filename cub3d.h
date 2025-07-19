@@ -50,37 +50,37 @@ typedef struct data
     int orientation;
     int long_line;
     char **map;
-} t_data;
+} t_pars;
 
 
 char	*get_next_line(int fd);
 char	*allocation(int fd);
 char	*fetch_line(char *buffer);
-void	free_error(t_data *data, char *msg);
+void	free_error(t_pars *data, char *msg);
 char	*join(char *s1, char *s2);
 void	free_args(char **arg);
-void	free_lines(t_data *data);
-void	free_identifiers(t_data *data);
+void	free_lines(t_pars *data);
+void	free_identifiers(t_pars *data);
 int		ft_isnum(char *str);
 int		num_length(char *str);
-void    read_file(char **av, t_data *data);
-void	allocate_map(char *all_lines, t_data *data);
+void    read_file(char **av, t_pars *data);
+void	allocate_map(char *all_lines, t_pars *data);
 void	check_map_extension(char *map_file);
-int		check_inputs(int ac, char *av[], t_data *data);
-void	initiaze_struct(t_data **data);
-void	free_all(t_data *data, char **configs, char **range, char *msg);
-void	parse_paths(t_data *data, int i);
-void	parse_color(t_data *data, int i);
-void	identifier_duplicate(t_data *data);
-void	check_configuration(t_data *data);
-int		config_path_found(t_data *data, int i);
-int		config_color_found(t_data *data, int i);
-void	parse_color_helper(t_data *data, char **configs, char **clr_range);
-void	check_map(t_data *data);
-void	valid_map_helper(t_data *data, int i, int j);
-void	adjust_map(t_data *data);
-void	valid_map(t_data *data, int i);
+int		check_inputs(int ac, char *av[], t_pars *data);
+void	initiaze_struct(t_pars **data);
+void	free_all(t_pars *data, char **configs, char **range, char *msg);
+void	parse_paths(t_pars *data, int i);
+void	parse_color(t_pars *data, int i);
+void	identifier_duplicate(t_pars *data);
+void	check_configuration(t_pars *data);
+int		config_path_found(t_pars *data, int i);
+int		config_color_found(t_pars *data, int i);
+void	parse_color_helper(t_pars *data, char **configs, char **clr_range);
+void	check_map(t_pars *data);
+void	valid_map_helper(t_pars *data, int i, int j);
+void	adjust_map(t_pars *data);
+void	valid_map(t_pars *data, int i);
 int		invalid_character(char c);
-void    free_identifiers(t_data *data);
+void    free_identifiers(t_pars *data);
 
 #endif

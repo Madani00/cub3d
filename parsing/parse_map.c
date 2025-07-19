@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:20:32 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/18 16:07:21 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	invalid_character(char c)
 	return (0);
 }
 
-void	valid_map_helper(t_data *data, int i, int j)
+void	valid_map_helper(t_pars *data, int i, int j)
 {
 	if (data->map_all[i][j] != '0')
 		data->orientation++;
@@ -36,7 +36,7 @@ void	valid_map_helper(t_data *data, int i, int j)
 		free_all(data, NULL, NULL, "❌ Error\nMap is not closed");
 }
 
-void	valid_map(t_data *data, int i)
+void	valid_map(t_pars *data, int i)
 {
 	int	j;
 
@@ -57,7 +57,7 @@ void	valid_map(t_data *data, int i)
 	}
 }
 
-void	adjust_map(t_data *data)
+void	adjust_map(t_pars *data)
 {
 	int	i;
 	int	j;
@@ -84,7 +84,7 @@ void	adjust_map(t_data *data)
 	data->map[k] = NULL;
 }
 
-void	check_map(t_data *data)
+void	check_map(t_pars *data)
 {
 	int	i;
 

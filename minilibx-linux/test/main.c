@@ -133,7 +133,7 @@ int	main()
       printf(" !! KO !!\n");
       exit(1);
     }
-  data1 = mlx_get_data_addr(im1,&bpp1,&sl1,&endian1);
+  data1 = mlx_get_pars_addr(im1,&bpp1,&sl1,&endian1);
   printf("OK (bpp1: %d, sizeline1: %d endian: %d type: %d)\n",bpp1,sl1,endian1,
 	 ((t_img *)im1)->type);
 
@@ -157,7 +157,7 @@ int	main()
       printf(" !! KO !!\n");
       exit(1);
     }
-  data3 = mlx_get_data_addr(im3,&bpp3,&sl3,&endian3);
+  data3 = mlx_get_pars_addr(im3,&bpp3,&sl3,&endian3);
   printf("OK (bpp3 %d, sizeline3 %d endian3 %d type %d)\n",bpp3,sl3,endian3,
 	 ((t_img *)im3)->type);
 
@@ -182,7 +182,7 @@ int	main()
       printf(" !! KO !!\n");
       exit(1);
     }
-  data2 = mlx_get_data_addr(im2,&bpp2,&sl2,&endian2);
+  data2 = mlx_get_pars_addr(im2,&bpp2,&sl2,&endian2);
   printf("OK (xpm %dx%d)(img bpp2: %d, sizeline2: %d endian: %d type: %d)\n",
 	 xpm1_x,xpm1_y,bpp2,sl2,endian2,((t_img *)im2)->type);
   sleep(2);
@@ -200,7 +200,7 @@ int	main()
       printf(" !! KO !!\n");
       exit(1);
     }
-  data4 = mlx_get_data_addr(im4,&bpp4,&sl4,&endian4);
+  data4 = mlx_get_pars_addr(im4,&bpp4,&sl4,&endian4);
   color_map_2(data4,bpp4,sl4,IM3_SX,IM3_SY,endian4, 2);
 
   printf(" 3rd window, Installing hooks ...");

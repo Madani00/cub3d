@@ -6,15 +6,15 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:04:47 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/18 15:52:00 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	initiaze_struct(t_data **data)
+void	initiaze_struct(t_pars **data)
 {
-	(*data) = malloc(sizeof(t_data));
+	(*data) = malloc(sizeof(t_pars));
 	(*data)->column = 0;
 	(*data)->find.north = 0;
 	(*data)->find.south = 0;
@@ -30,7 +30,7 @@ void	initiaze_struct(t_data **data)
 }
 
 
-void print_map(t_data *data)
+void print_map(t_pars *data)
 {
 	int i = 0;
 	while (data->map[i])
@@ -71,7 +71,7 @@ int	ft_isnum(char *str)
 	return (0);
 }
 
-int	check_inputs(int ac, char *av[], t_data *data)
+int	check_inputs(int ac, char *av[], t_pars *data)
 {
 	if (ac != 2)
 		return (printf("❌ Error\n in the number of arguments\n"));
