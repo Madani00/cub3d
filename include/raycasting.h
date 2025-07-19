@@ -62,6 +62,10 @@ typedef struct s_data
     int bpp_map;
     int len_line_map;
     int endiane_map;
+    int height;
+    int width;
+    int hei_map;
+    int wid_map;
     t_player player;
 } t_data;
 

@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:21:56 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 14:38:58 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:53:25 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ char	*get_right_texture(t_pars *data, char *iden)
 void	path_texture(t_pars *data, char c)
 {
 	if (c == 'E')
-		data->direction = get_right_texture(data, "EA");
+		data->direction = ft_strdup(get_right_texture(data, "EA"));
 	else if (c == 'N')
-		data->direction = get_right_texture(data, "NO");
+		data->direction = ft_strdup(get_right_texture(data, "NO"));
 	else if (c == 'S')
-		data->direction = get_right_texture(data, "SO");
+		data->direction = ft_strdup(get_right_texture(data, "SO"));
 	else if (c == 'W')
-		data->direction = get_right_texture(data, "WE");
+		data->direction = ft_strdup(get_right_texture(data, "WE"));
 }

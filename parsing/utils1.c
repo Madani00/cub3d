@@ -6,27 +6,28 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:04:47 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 14:52:45 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:31:02 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 
-void	initiaze_struct(t_pars **data)
+t_pars *initiaze_struct(t_pars *data)
 {
-	(*data) = malloc(sizeof(t_pars));
-	(*data)->column = 0;
-	(*data)->find.north = 0;
-	(*data)->find.south = 0;
-	(*data)->find.west = 0;
-	(*data)->find.east = 0;
-	(*data)->find.floor = 0;
-	(*data)->find.ceiling = 0;
-	(*data)->index_p = 0;
-	(*data)->index_c = 0;
-	(*data)->orientation = 0;
-	(*data)->long_line = 0;
-	(*data)->f_newline = false;
+	data = malloc(sizeof(t_pars));
+	data->column = 0;
+	data->find.north = 0;
+	data->find.south = 0;
+	data->find.west = 0;
+	data->find.east = 0;
+	data->find.floor = 0;
+	data->find.ceiling = 0;
+	data->index_p = 0;
+	data->index_c = 0;
+	data->orientation = 0;
+	data->long_line = 0;
+	data->f_newline = false;
+	return data;
 }
 
 
@@ -71,6 +72,20 @@ int	ft_isnum(char *str)
 	return (0);
 }
 
+// t_color	*get_right_color(t_pars *data, char *iden)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < data->index_c)
+// 	{
+// 		if (ft_strcmp(iden, data->color[i].iden) == 0)
+// 			return (&data->color[i]);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
+
 t_color	*get_right_color(t_pars *data, char *iden)
 {
 	int	i;
@@ -85,16 +100,22 @@ t_color	*get_right_color(t_pars *data, char *iden)
 	return (NULL);
 }
 
-int	check_inputs(int ac, char *av[], t_pars *data)
+t_pars *check_inputs(int ac, char *av[], t_pars *data)
 {
 	if (ac != 2)
-		return (printf("❌ Error\n in the number of arguments\n"));
+		return (printf("❌ Error\n in the number of arguments\n"), NULL);
 	check_map_extension(av[1]);
-	initiaze_struct(&data);
+	data = initiaze_struct(data);
 	read_file(av, data);
 	check_configuration(data);
 	check_map(data);
 	adjust_map(data);
 	//print_map(data);
-	return (0);
+	
+     printf(" final direction is:  %s \n", data->direction);
+	//  t_color *array = get_right_color(data, "C");
+	//  printf(" COLOR 1 :  %d \n", array->arr[0]);
+	//  printf(" COLOR 2 :  %d \n", array->arr[1]);
+	//  printf(" COLOR 2 :  %d \n", array->arr[2]);
+	return data;
 }

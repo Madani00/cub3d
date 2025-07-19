@@ -31,7 +31,11 @@ int close_window(t_data* game)
 void init_game(t_data* data,t_pars* input)
 {
     init_player(&data->player);
-    // data->map = input->map;
+    data->map = input->map;
+    data->height = (input->column - 6) * BLOCK;
+    data->width = input->long_line * BLOCK;
+    data->hei_map = (input->column - 6) * BLOCK_MAP;
+    data->wid_map = input->long_line * BLOCK_MAP;
     // data.color_c = get_color(input,"C");
     // data.color_floor = get_color(input,"F");
     // data.diraction_player = input.direction;
@@ -43,6 +47,11 @@ void init_game(t_data* data,t_pars* input)
     data->data_map = mlx_get_data_addr(data->img_map, &data->bpp_map, &data->len_line_map, &data->endiane_map);
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+    //  printf(" final direction is:  %s \n", input->direction);
+	// //  t_color *array = get_right_color(input, "C");
+	// //  printf(" COLOR 1 :  %d \n", array->arr[0]);
+	// //  printf(" COLOR 2 :  %d \n", array->arr[1]);
+	// //  printf(" COLOR 2 :  %d \n", array->arr[2]);
 }
 
 void put_pixel_into_frame(int x, int y, t_data* data, int color)
@@ -450,13 +459,15 @@ int ft_performent(t_data *data)
 int main(int ac, char **av)
 {
     t_data data;
-    t_pars input;
+    t_pars *input;
 
-     if (check_inputs(ac, av, &input))
+    input = check_inputs(ac, av, input);
+    if (!input)
         return (1);
 
-     //printf(" final direction is:  %s \n", data->direction);
-	//  t_color *array = get_right_color(data, "C");
+    printf("%d \n", input->column);
+    // printf(" direction:  %s \n", input->direction);
+	//  t_color *array = get_right_color(input, "C");
 	//  printf(" COLOR 1 :  %d \n", array->arr[0]);
 	//  printf(" COLOR 2 :  %d \n", array->arr[1]);
 	//  printf(" COLOR 2 :  %d \n", array->arr[2]);
@@ -480,13 +491,13 @@ int main(int ac, char **av)
     // input.path[3].path = // /texture
 
 
-    // init_game(&data,&input);
-    // mlx_hook(data.win, 2, 1L << 0, key_press, &data);
-    // mlx_hook(data.win, 3, 1L << 1, key_release, &data);
-    // mlx_loop_hook(data.mlx, ft_performent, &data);
+    init_game(&data, input);
+    mlx_hook(data.win, 2, 1L << 0, key_press, &data);
+    mlx_hook(data.win, 3, 1L << 1, key_release, &data);
+    mlx_loop_hook(data.mlx, ft_performent, &data);
     
-    // mlx_hook(data.win, 17, 0, close_window, &data); 
-    // mlx_loop(data.mlx);
+    mlx_hook(data.win, 17, 0, close_window, &data); 
+    mlx_loop(data.mlx);
     return (0);
 }
 
