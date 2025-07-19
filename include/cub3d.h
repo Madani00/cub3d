@@ -83,5 +83,10 @@ void	adjust_map(t_pars *data);
 void	valid_map(t_pars *data, int i);
 int		invalid_character(char c);
 void    free_identifiers(t_pars *data);
+void	path_texture(t_pars *data, char c);
+char	*get_right_texture(t_pars *data, char *iden);
+t_color	*get_right_color(t_pars *data, char *iden);
+
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:04:47 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:52:45 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,20 @@ int	ft_isnum(char *str)
 		i++;
 	}
 	return (0);
+}
+
+t_color	*get_right_color(t_pars *data, char *iden)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->index_c)
+	{
+		if (ft_strcmp(iden, data->color[i].iden) == 0)
+			return (&data->color[i]);
+		i++;
+	}
+	return (NULL);
 }
 
 int	check_inputs(int ac, char *av[], t_pars *data)

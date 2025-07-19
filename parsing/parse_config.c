@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:07:20 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:25:36 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	parse_paths(t_pars *data, int i)
 		(ft_strncmp(configs[1], ".xpm", 4) == 0))
 		free_all(data, configs, NULL, "❌ Error\nfile extension is not valid");
 	data->path[data->index_p].iden = ft_strdup(configs[0]);
-	data->path[data->index_p++].pth = ft_strdup(configs[1]);
+	data->path[data->index_p].pth = ft_strdup(configs[1]);
+	data->index_p++;
 	free_args(configs);
 }
 

@@ -446,13 +446,21 @@ int ft_performent(t_data *data)
     return (0);
 }
 
-int main(void)
+
+int main(int ac, char **av)
 {
     t_data data;
     t_pars input;
 
-    //  if (check_inputs(ac, av, &input))
-    //     return (1);
+     if (check_inputs(ac, av, &input))
+        return (1);
+
+     //printf(" final direction is:  %s \n", data->direction);
+	//  t_color *array = get_right_color(data, "C");
+	//  printf(" COLOR 1 :  %d \n", array->arr[0]);
+	//  printf(" COLOR 2 :  %d \n", array->arr[1]);
+	//  printf(" COLOR 2 :  %d \n", array->arr[2]);
+    
     // // color
     // input.color[0].iden = // C aw F
     // // range of color in the array
@@ -472,13 +480,13 @@ int main(void)
     // input.path[3].path = // /texture
 
 
-    init_game(&data,&input);
-    mlx_hook(data.win, 2, 1L << 0, key_press, &data);
-    mlx_hook(data.win, 3, 1L << 1, key_release, &data);
-    mlx_loop_hook(data.mlx, ft_performent, &data);
+    // init_game(&data,&input);
+    // mlx_hook(data.win, 2, 1L << 0, key_press, &data);
+    // mlx_hook(data.win, 3, 1L << 1, key_release, &data);
+    // mlx_loop_hook(data.mlx, ft_performent, &data);
     
-    mlx_hook(data.win, 17, 0, close_window, &data); 
-    mlx_loop(data.mlx);
+    // mlx_hook(data.win, 17, 0, close_window, &data); 
+    // mlx_loop(data.mlx);
     return (0);
 }
 
