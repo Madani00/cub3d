@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:20:32 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:27:53 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int	invalid_character(char c)
 void	valid_map_helper(t_pars *data, int i, int j)
 {
 	if (data->map_all[i][j] != '0')
+	{
+		path_texture(data, data->map_all[i][j]);
 		data->orientation++;
+	}
 	if (i == 6 || j == 0 || j == (ft_strlen(data->map_all[i]) - 1) || \
 		i == data->column - 1)
 		free_all(data, NULL, NULL, "❌ Error\nMap is not closed");
@@ -54,7 +57,6 @@ void	valid_map(t_pars *data, int i)
 		j++;
 		if (data->long_line < j)
 			data->long_line = j;
-		//if ()
 	}
 }
 

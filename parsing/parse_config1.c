@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:21:56 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:53:25 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,30 @@ void	identifier_duplicate(t_pars *data)
 	{
 		free_all(data, NULL, NULL, "❌ Error\nidentifier is duplicated");
 	}
+}
+
+char	*get_right_texture(t_pars *data, char *iden)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->index_p)
+	{
+		if (ft_strcmp(iden, data->path[i].iden) == 0)
+			return (data->path[i].pth);
+		i++;
+	}
+	return (NULL);
+}
+
+void	path_texture(t_pars *data, char c)
+{
+	if (c == 'E')
+		data->direction = ft_strdup(get_right_texture(data, "EA"));
+	else if (c == 'N')
+		data->direction = ft_strdup(get_right_texture(data, "NO"));
+	else if (c == 'S')
+		data->direction = ft_strdup(get_right_texture(data, "SO"));
+	else if (c == 'W')
+		data->direction = ft_strdup(get_right_texture(data, "WE"));
 }

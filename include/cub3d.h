@@ -40,7 +40,7 @@ typedef struct color
 typedef struct data
 {
     char **map_all;
-    int column;
+    int column; // comuml - 6  == height
     bool f_newline;
     t_config find;
     t_path path[4];
@@ -48,7 +48,7 @@ typedef struct data
     t_color color[2];
     int index_c;
     int orientation;
-    int long_line;
+    int long_line;        // width
     char *direction;
     char **map;
 } t_pars;
@@ -67,8 +67,8 @@ int		num_length(char *str);
 void    read_file(char **av, t_pars *data);
 void	allocate_map(char *all_lines, t_pars *data);
 void	check_map_extension(char *map_file);
-int		check_inputs(int ac, char *av[], t_pars *data);
-void	initiaze_struct(t_pars **data);
+t_pars *check_inputs(int ac, char *av[], t_pars *data);
+t_pars *initiaze_struct(t_pars *data);
 void	free_all(t_pars *data, char **configs, char **range, char *msg);
 void	parse_paths(t_pars *data, int i);
 void	parse_color(t_pars *data, int i);
@@ -83,5 +83,10 @@ void	adjust_map(t_pars *data);
 void	valid_map(t_pars *data, int i);
 int		invalid_character(char c);
 void    free_identifiers(t_pars *data);
+void	path_texture(t_pars *data, char c);
+char	*get_right_texture(t_pars *data, char *iden);
+t_color	*get_right_color(t_pars *data, char *iden);
+
+
 
 #endif
