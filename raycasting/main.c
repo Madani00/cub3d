@@ -3,7 +3,7 @@
 bool is_touch_wall(float x_ray,float y_ray,t_data* data,int block);
 void move_player_map(t_data* game,float cos_angle,float sin_angle);
 
-void init_player(t_player*  player,char** map)
+void init_player(t_player*  player)
 {
     int i;
     int j;
@@ -16,23 +16,6 @@ void init_player(t_player*  player,char** map)
     player->left = false;
     player->right = false;
     player->up = false;
-    while (map && map[i] != NULL)
-    {
-        j = 0;
-        while (map[i][j] != '\0')
-        {
-            if (map[i][j] == 'N')
-            {
-                player->x = j * BLOCK;
-                player->y = i * BLOCK; 
-                player->map_x = j * BLOCK_MAP;
-                player->map_y = i * BLOCK_MAP;
-                return;
-            }
-        j++; 
-        }
-        i++;
-    }
 }
 
 int close_window(t_data* game)
@@ -47,14 +30,11 @@ int close_window(t_data* game)
 
 void init_game(t_data* data,t_pars* input)
 {
-    data->map = input->map;
-    init_player(&data->player,data->map);
-    data->height = (input->column - 6) * BLOCK;
-    data->width = input->long_line * BLOCK;
-    data->hei_map = (input->column - 6) * BLOCK_MAP;
-    data->wid_map = input->long_line * BLOCK_MAP;
-
-
+    init_player(&data->player);
+    // data->map = input->map;
+    // data.color_c = get_color(input,"C");
+    // data.color_floor = get_color(input,"F");
+    // data.diraction_player = input.direction;
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, data->width, data->height, "CUB3D");
     data->img = mlx_new_image(data->mlx,data->width, data->height);
@@ -140,18 +120,32 @@ void draw_map(t_data* data)
     data->inside_win = true;
 }
 
+int get_nbr_color(t_color* color)
+{
+    int c;
+
+    c = 0;
+    c = c | color->arr[2];
+    c = (c << 8) | color->arr[1];
+    c = (c << 16) | color->arr[0];
+    return (c);
+}
+
 void clear_screen(t_data* data)
 {
     int i, j;
     data->inside_win = true;
     data->iside_win_map = true;
     int color_ciel = 255;
+    // 255
+    //0 
+    //299
     int color_floor = 13056;
-    for (i = 0; i < (data->height + 90)/2; i++)
+    for (i = 0; i < (HIGTH + 90)/2; i++)
     {
        if (i % 2 == 0 && color_ciel != 0)
             color_ciel--;
-        for (j = 1; j < data->width; j++)
+        for (j = 1; j < WIETH; j++)
         {
             put_pixel_into_frame(j, i, data, color_ciel);
         }
@@ -160,13 +154,13 @@ void clear_screen(t_data* data)
     {
         if (i % 5 == 0)
             color_floor++;
-        for (j = 0; j < data->width; j++)
+        for (j = 0; j < WIETH; j++)
             put_pixel_into_frame(j, i, data,color_floor);
     }
     // data->inside_win = false;
-    // for (i = 0; i < data->hei_map; i++)
+    // for (i = 0; i < HIGTH_MAP; i++)
     // {
-        // for (j = 0; j < data->wid_map; j++)
+    //     for (j = 0; j < WIETH_MAP; j++)
     //         put_pixel_into_frame(j, i, data, 0x00000000);
     // }
     // data->inside_win = true;
@@ -188,7 +182,7 @@ int key_press(int keycode, t_data *data)
         data->player.turn_left = true;
     else if (keycode == RIGHT)
         data->player.turn_right = true;
-
+    
     return (0);
 }
 
@@ -271,6 +265,12 @@ void move_angle(t_player* player)
         player->angle -= ANGLE_SPEED;
     if (player->turn_right)
         player->angle += ANGLE_SPEED;
+    
+    if (player->angle > 2 * PI)
+        player->angle = 0;
+    if (player->angle < 0)
+        player->angle = 2 * PI;
+        
 }
 
 void move_player(t_data* game,float cos_angle,float sin_angle)
@@ -311,7 +311,7 @@ bool is_touch_wall(float x_ray,float y_ray,t_data* data,int block)
     
 }
 
-float distance(float x, float y)
+float sqr_two_point(float x, float y)
 {
     return sqrt(x * x + y * y);
 }
@@ -326,41 +326,50 @@ float fixed_dist(float x1, float y1, float x2, float y2, t_data *game)
     delta_x = x2 - x1;
     delta_y = y2 - y1;
     angle = atan2(delta_y, delta_x) - game->player.angle;
-    fix_dist = distance(delta_x, delta_y) * cos(angle);
+    fix_dist = sqr_two_point(delta_x, delta_y) * cos(angle);
     return fix_dist;
 }
 
-int get_volum_color_base_dist(double dis)
+int get_volum_color_base_dist(double dis,bool ver,bool hor)
 {
+    int color;
     unsigned int r,g,b;
     
-    
     dis /= 50;
-
+    
     if (dis < 1)
         dis = 1;
-
     r = 255/dis;
     g = 255/dis;
     b = 255/dis;
-
     return (r << 16 | g << 8 | b);
+
+    //  if (ver)
+    //  {
+    //     color = 0xA52A2A;
+
+    //  }
+    // else
+    //     color = 0xFFC0CB;
+    // return (color);
 }
 
 void draw_view_ray(float ray_x,float ray_y,int i,t_data* data)
 {
     double dist;
     float hiegh;
+    bool hit_hor = false;
+    bool hit_ver = false;
     int start_y;
     int end;
 
     dist = fixed_dist(data->player.x,data->player.y,ray_x,ray_y,data);
-    hiegh = (BLOCK / dist) * data->width ;
-    start_y = ((data->height + 90)- hiegh) / 2;
+    hiegh = (BLOCK / dist) * WIETH ;
+    start_y = ((HIGTH + 90)- hiegh) / 2;
     end = start_y + hiegh;
     while (start_y < end)
     {
-       put_pixel_into_frame(i,start_y,data,get_volum_color_base_dist(dist));
+       put_pixel_into_frame(i,start_y,data,get_volum_color_base_dist(dist,hit_ver,hit_hor));
        start_y++;
     }
 }
@@ -383,17 +392,20 @@ void draw_ray(t_data* data,float start_x,int i)
     sin_angle = sin(start_x);
     data->iside_win_map = false;
     data->inside_win = true;
+    //printf("direction player %d ",get_direction(cos_angle))
     while(!is_touch_wall(ray_x, ray_y, data,BLOCK))
     {
-        if (D_2)
-        {
-            get_intersection(data,&ray_x,&ray_y);
-            put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
-
-        }
+        // if (D_2)
+        // {
+            
+        //     get_intersection(data,&ray_x,&ray_y);
+        //     put_pixel_into_frame(ray_x, ray_y, data, 0xFF0000);
+            
+        // }
         ray_x += cos_angle;
         ray_y += sin_angle;
     }
+    //put_pixel_into_frame(ray_x, ray_y, data, 400);
     if (!D_2)
         draw_view_ray(ray_x,ray_y,i,data);
 }
@@ -422,8 +434,6 @@ void draw_ray_map(t_data* data,float start_x)
     ray_y = data->player.map_y;
     cos_angle = cos(start_x);
     sin_angle = sin(start_x);
-    cos_angle /= (BLOCK/BLOCK_MAP);
-    sin_angle /= (BLOCK/BLOCK_MAP);
     data->iside_win_map = true;
     data->inside_win = false;
     while(!is_touch_wall(ray_x, ray_y, data,BLOCK_MAP))
@@ -470,14 +480,30 @@ int ft_performent(t_data *data)
 int main(int ac, char **av)
 {
     t_data data;
-    t_pars *input;
+    t_pars input;
 
-    input = check_inputs(ac, av, input);
-    if (!input)
-        return (1);
+    //  if (check_inputs(ac, av, &input))
+    //     return (1);
+    // // color
+    // input.color[0].iden = // C aw F
+    // // range of color in the array
+    // input.color[0].arr[0] = 255
+    // input.color[0].arr[1] = 30
+    // input.color[0].arr[2] = 89 
 
-    init_game(&data,input);
-    
+    // // paths
+    // input.path[0].iden = // EA
+    // input.path[1].iden = // WE
+    // input.path[2].iden = // NO
+    // input.path[3].iden = // SO
+
+    // input.path[0].path = // /texture
+    // input.path[1].path = // /texture
+    // input.path[2].path = // /texture
+    // input.path[3].path = // /texture
+
+
+    init_game(&data,&input);
     mlx_hook(data.win, 2, 1L << 0, key_press, &data);
     mlx_hook(data.win, 3, 1L << 1, key_release, &data);
     mlx_loop_hook(data.mlx, ft_performent, &data);
