@@ -56,15 +56,16 @@ void init_game(t_data* data,t_pars* input)
     
     data->img_height = 32;
     data->img_width = 32;
-    data->texture1 = mlx_xpm_file_to_image(data->mlx, "texture/eagle.xpm", &data->img_width, &data->img_height);
-    data->texture2 = mlx_xpm_file_to_image(data->mlx, "texture/mossy.xpm", &data->img_width, &data->img_height);
-    data->texture3 = mlx_xpm_file_to_image(data->mlx, "texture/red_brick.xpm", &data->img_width, &data->img_height);
-    data->texture4 = mlx_xpm_file_to_image(data->mlx, "texture/blue_stone.xpm", &data->img_width, &data->img_height);
-    data->tex_data[0] =  (int *)mlx_get_data_addr(data->texture1, &data->bpp, &data->size_line1, &data->endiane);
-    data->tex_data[1] =  (int *)mlx_get_data_addr(data->texture2, &data->bpp, &data->size_line2, &data->endiane);
-    data->tex_data[2] =  (int *)mlx_get_data_addr(data->texture3, &data->bpp, &data->size_line3, &data->endiane);
-    data->tex_data[3] =  (int *)mlx_get_data_addr(data->texture4, &data->bpp, &data->size_line4, &data->endiane);
-    
+    // get_right_texture(input, "NO");
+    // data->texture1 = mlx_xpm_file_to_image(data->mlx, "texture/eagle.xpm", &data->img_width, &data->img_height);
+    data->texture1 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "NO"), &data->img_width, &data->img_height);
+    data->texture2 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "SO"), &data->img_width, &data->img_height);
+    data->texture3 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "EA"), &data->img_width, &data->img_height);
+    data->texture4 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "WE"), &data->img_width, &data->img_height);
+    data->tex_data[NORTH] =  (int *)mlx_get_data_addr(data->texture1, &data->bpp, &data->size_line1, &data->endiane);
+    data->tex_data[SOUTH] =  (int *)mlx_get_data_addr(data->texture2, &data->bpp, &data->size_line2, &data->endiane);
+    data->tex_data[EAST] =  (int *)mlx_get_data_addr(data->texture3, &data->bpp, &data->size_line3, &data->endiane);
+    data->tex_data[WEST] =  (int *)mlx_get_data_addr(data->texture4, &data->bpp, &data->size_line4, &data->endiane);
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
