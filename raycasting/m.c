@@ -57,9 +57,9 @@ void init_game(t_data* data,t_pars* input)
     data->img_height = 32;
     data->img_width = 32;
     data->texture1 = mlx_xpm_file_to_image(data->mlx, "texture/eagle.xpm", &data->img_width, &data->img_height);
-    data->texture2 = mlx_xpm_file_to_image(data->mlx, "texture/wall2.xpm", &data->img_width, &data->img_height);
-    data->texture3 = mlx_xpm_file_to_image(data->mlx, "texture/wall3.xpm", &data->img_width, &data->img_height);
-    data->texture4 = mlx_xpm_file_to_image(data->mlx, "texture/wall4.xpm", &data->img_width, &data->img_height);
+    data->texture2 = mlx_xpm_file_to_image(data->mlx, "texture/mossy.xpm", &data->img_width, &data->img_height);
+    data->texture3 = mlx_xpm_file_to_image(data->mlx, "texture/red_brick.xpm", &data->img_width, &data->img_height);
+    data->texture4 = mlx_xpm_file_to_image(data->mlx, "texture/blue_stone.xpm", &data->img_width, &data->img_height);
     data->tex_data[0] =  (int *)mlx_get_data_addr(data->texture1, &data->bpp, &data->size_line1, &data->endiane);
     data->tex_data[1] =  (int *)mlx_get_data_addr(data->texture2, &data->bpp, &data->size_line2, &data->endiane);
     data->tex_data[2] =  (int *)mlx_get_data_addr(data->texture3, &data->bpp, &data->size_line3, &data->endiane);
@@ -446,7 +446,7 @@ void draw_view_ray(float ray_x,float ray_y,int i,t_data* data, RayCalculationDat
     while (start_y < end)
     {
         int texY = (start_y - top_pixel) * ((double)TEXTURE_HEI / hiegh);
-        color = data->tex_data[0][(TEXTURE_WID * texY) + texX];
+        color = data->tex_data[ray_data->directins][(TEXTURE_WID * texY) + texX];
         put_pixel_into_frame(i,start_y,data, color);
         //put_pixel_into_frame(i,start_y,data,get_volum_color_base_dist(dist,data->player.direction));
         texY += 1;
