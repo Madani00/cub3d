@@ -53,15 +53,19 @@ void init_game(t_data* data,t_pars* input)
     data->img_map =  mlx_new_image(data->mlx, data->wid_map, data->hei_map);
     data->data = mlx_get_data_addr(data->img, &data->bpp, &data->len_line, &data->endiane);
     data->data_map = mlx_get_data_addr(data->img_map, &data->bpp, &data->len_line_map, &data->endiane);
-    // data->texture1 = mlx_xpm_file_to_image(data->mlx, "texture/wall.xpm", &data->width, &data->height);
-    // data->texture2 = mlx_xpm_file_to_image(data->mlx, "texture/wall2.xpm", &data->width, &data->height);
-    // data->texture3 = mlx_xpm_file_to_image(data->mlx, "texture/wall3.xpm", &data->width, &data->height);
-    // data->texture4 = mlx_xpm_file_to_image(data->mlx, "texture/wall4.xpm", &data->width, &data->height);
-    // data->tex_data[0] =  (int *)mlx_get_data_addr(data->texture1, &data->bpp, &data->size_line1, &data->endiane);
-    // data->tex_data[1] =  (int *)mlx_get_data_addr(data->texture2, &data->bpp, &data->size_line2, &data->endiane);
-    // data->tex_data[2] =  (int *)mlx_get_data_addr(data->texture3, &data->bpp, &data->size_line3, &data->endiane);
-    // data->tex_data[3] =  (int *)mlx_get_data_addr(data->texture4, &data->bpp, &data->size_line4, &data->endiane);
-    // mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+    
+    data->img_height = 32;
+    data->img_width = 32;
+    data->texture1 = mlx_xpm_file_to_image(data->mlx, "texture/eagle.xpm", &data->img_width, &data->img_height);
+    data->texture2 = mlx_xpm_file_to_image(data->mlx, "texture/wall2.xpm", &data->img_width, &data->img_height);
+    data->texture3 = mlx_xpm_file_to_image(data->mlx, "texture/wall3.xpm", &data->img_width, &data->img_height);
+    data->texture4 = mlx_xpm_file_to_image(data->mlx, "texture/wall4.xpm", &data->img_width, &data->img_height);
+    data->tex_data[0] =  (int *)mlx_get_data_addr(data->texture1, &data->bpp, &data->size_line1, &data->endiane);
+    data->tex_data[1] =  (int *)mlx_get_data_addr(data->texture2, &data->bpp, &data->size_line2, &data->endiane);
+    data->tex_data[2] =  (int *)mlx_get_data_addr(data->texture3, &data->bpp, &data->size_line3, &data->endiane);
+    data->tex_data[3] =  (int *)mlx_get_data_addr(data->texture4, &data->bpp, &data->size_line4, &data->endiane);
+    
+    mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
 
@@ -153,14 +157,14 @@ void clear_screen(t_data* data)
     data->iside_win_map = true;
     int color_ciel = get_nbr_color(get_right_color(data->data_pars,"C"));
     int color_floor = get_nbr_color(get_right_color(data->data_pars,"F"));
-    for (i = 0; i < (data->height + 90)/2; i++)
+    for (i = 0; i < (data->height)/2; i++)
     {
         for (j = 1; j < data->width; j++)
         {
             put_pixel_into_frame(j, i, data, color_ciel);
         }
     }
-    for (i = (data->height + 90)/2; i < data->height; i++)
+    for (i = (data->height)/2; i < data->height; i++)
     {
         for (j = 0; j < data->width; j++)
             put_pixel_into_frame(j, i, data,color_floor);
@@ -374,40 +378,79 @@ int get_volum_color_base_dist(double dis,t_dirs direction)
 
 }
 
-void draw_view_ray(RayCalculationData ray_data,int i,t_data* data)
+// void draw_view_ray(RayCalculationData ray_data,int i,t_data* data)
+// {
+//     double dist;
+//     float hiegh;
+//     bool hit_hor = false;
+//     bool hit_ver = false;
+//     int ray_x = (int )ray_data.sideDistX;
+//     int ray_y = (int )ray_data.sideDistY;
+//     int start_y;
+//     int end;
+
+//     dist = fixed_dist(data->player.x,data->player.y,ray_x,ray_y,data);
+//      if (dist < 20)
+//         dist = 20;
+//     hiegh = (BLOCK / dist) * (data->width) ;
+//     start_y = ((data->height + 90)- hiegh) / 2;
+//     end = start_y + hiegh;
+   
+//     // double wall_x;
+//     // if (ray_data.side == 1)
+//     //     wall_x = fmod(ray_x, BLOCK) / BLOCK;
+//     // else
+//     //     wall_x = fmod(ray_x, BLOCK) / BLOCK;        
+//     // int texX = (int)(wall_x * TEXTURE_WID);
+//     // int top_pixel = (data->height - hiegh) / 2;
+//     // int color;
+//     //printf("this is len eall %f\n\n",dist);
+//     while (start_y < end)
+//     {
+//         // int texY = (start_y - top_pixel) * ((double)TEXTURE_HEI / hiegh);
+//         //color = data->tex_data[0][(TEXTURE_WID * texY) + texX];
+//         //put_pixel_into_frame(i,start_y,data, color);
+//         put_pixel_into_frame(i,start_y,data,get_volum_color_base_dist(dist,data->player.direction));
+//         //put_pixel_into_frame(i,start_y,data, data->tex_data[0][0]);
+//         start_y++;
+//     }
+// }
+
+void draw_view_ray(float ray_x,float ray_y,int i,t_data* data, RayCalculationData* ray_data)
 {
     double dist;
     float hiegh;
     bool hit_hor = false;
     bool hit_ver = false;
-    int ray_x = (int )ray_data.sideDistX;
-    int ray_y = (int )ray_data.sideDistY;
     int start_y;
     int end;
 
+
     dist = fixed_dist(data->player.x,data->player.y,ray_x,ray_y,data);
-     if (dist < 20)
-        dist = 20;
+     if (dist < 0)
+        dist = 1;
     hiegh = (BLOCK / dist) * (data->width) ;
-    start_y = ((data->height + 90)- hiegh) / 2;
+    start_y = ((data->height)- hiegh) / 2;
     end = start_y + hiegh;
    
-    // double wall_x;
-    // if (ray_data.side == 1)
-    //     wall_x = fmod(ray_x, BLOCK) / BLOCK;
-    // else
-    //     wall_x = fmod(ray_x, BLOCK) / BLOCK;        
-    // int texX = (int)(wall_x * TEXTURE_WID);
-    // int top_pixel = (data->height - hiegh) / 2;
-    // int color;
-    //printf("this is len eall %f\n\n",dist);
+    // hi
+    double wall_x;
+    if (ray_data->side == 1)
+        wall_x = fmod(ray_x, BLOCK) / BLOCK;
+   else
+        wall_x = fmod(ray_y, BLOCK) / BLOCK;        
+    int texX = (int)(wall_x * TEXTURE_WID);
+    int top_pixel = (data->height - hiegh) / 2;
+    int color;
+   
     while (start_y < end)
     {
-        // int texY = (start_y - top_pixel) * ((double)TEXTURE_HEI / hiegh);
-        //color = data->tex_data[0][(TEXTURE_WID * texY) + texX];
-        //put_pixel_into_frame(i,start_y,data, color);
-        put_pixel_into_frame(i,start_y,data,get_volum_color_base_dist(dist,data->player.direction));
-        //put_pixel_into_frame(i,start_y,data, data->tex_data[0][0]);
+        int texY = (start_y - top_pixel) * ((double)TEXTURE_HEI / hiegh);
+        color = data->tex_data[0][(TEXTURE_WID * texY) + texX];
+        put_pixel_into_frame(i,start_y,data, color);
+        //put_pixel_into_frame(i,start_y,data,get_volum_color_base_dist(dist,data->player.direction));
+        texY += 1;
+    
         start_y++;
     }
 }
@@ -510,7 +553,8 @@ void draw_ray_on_wind(RayCalculationData* ray_data, int j, t_data* game)
 {
     game->iside_win_map = false; // Set flag before drawing
 
-    draw_view_ray(*ray_data, j, game);
+    draw_view_ray((int)ray_data->draw_x, (int)ray_data->draw_y, j, game, ray_data);
+    //draw_view_ray(*ray_data, j, game);
     game->iside_win_map = true;  // Reset flag after drawing
 }
 

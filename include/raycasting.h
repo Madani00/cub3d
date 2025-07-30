@@ -24,8 +24,8 @@
 # define A 100
 # define SPACE 32
 
-# define TEXTURE_WID 32
-# define TEXTURE_HEI 32
+# define TEXTURE_WID 64
+# define TEXTURE_HEI 64
 
 typedef enum e_dirs
 {
@@ -114,17 +114,20 @@ typedef struct s_data
     int width;
     int hei_map;
     int wid_map;
-    int *tex_data[4];
 
+    // added 
+    int img_width;
+    int img_height;
+    int *tex_data[4];
     void *texture1;
     void *texture2;
     void *texture3;
     void *texture4;
-
     int size_line1;
     int size_line2;
     int size_line3;
     int size_line4;
+
     t_player player;
 
     int     map_width;
@@ -158,9 +161,11 @@ void move_player(t_data* game,float cos_angle,float sin_angle);
 bool is_touch_wall(float x_ray,float y_ray,t_data* data,int block);
 float sqr_two_point(float x, float y);
 float fixed_dist(float x1, float y1, float x2, float y2, t_data *game);
+
 // int get_volum_color_base_dist(double dis,bool ver,bool hor);
-// void draw_view_ray(float ray_x,float ray_y,int i,t_data* data);
-void draw_view_ray(RayCalculationData ray_data,int i,t_data* data);
+void draw_view_ray(float ray_x,float ray_y,int i,t_data* data, RayCalculationData* ray_data);
+// void draw_view_ray(RayCalculationData ray_data,int i,t_data* data);
+
  void get_intersection(t_data* data,float* ray_x,float* ray_y);
 void draw_ray(t_data* data,float start_x,int i);
 void move_player_map(t_data* game,float cos_angle,float sin_angle);
