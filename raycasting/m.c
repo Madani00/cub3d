@@ -77,14 +77,12 @@ void init_game(t_data* data,t_pars* input)
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, data->width, data->height, "CUB3D");
     data->img = mlx_new_image(data->mlx,data->width, data->height);
-    // data->img_map =  mlx_new_image(data->mlx, data->wid_map, data->hei_map);
+    data->img_map =  mlx_new_image(data->mlx, data->wid_map, data->hei_map);
     data->data = mlx_get_data_addr(data->img, &data->bpp, &data->len_line, &data->endiane);
-    // data->data_map = mlx_get_data_addr(data->img_map, &data->bpp, &data->len_line_map, &data->endiane);
+    data->data_map = mlx_get_data_addr(data->img_map, &data->bpp, &data->len_line_map, &data->endiane);
     
     data->img_height = 32;
     data->img_width = 32;
-    // get_right_texture(input, "NO");
-    // data->texture1 = mlx_xpm_file_to_image(data->mlx, "texture/eagle.xpm", &data->img_width, &data->img_height);
     data->texture1 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "NO"), &data->img_width, &data->img_height);
     data->texture2 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "SO"), &data->img_width, &data->img_height);
     data->texture3 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "EA"), &data->img_width, &data->img_height);
