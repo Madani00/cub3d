@@ -37,6 +37,33 @@ int close_window(t_data* game)
     exit(0);
     return (0);
 }
+void	free_images(t_data *data)
+{
+	if (data->texture1)
+		mlx_destroy_image(data->mlx, data->texture1);
+	if (data->texture2)
+		mlx_destroy_image(data->mlx, data->texture2);
+    if (data->texture3)
+		mlx_destroy_image(data->mlx, data->texture3);
+	if (data->texture4)
+		mlx_destroy_image(data->mlx, data->texture4);
+    if (data->img)
+        mlx_destroy_image(data->mlx, data->img);
+}
+void	free_minilbx(t_data *data)
+{
+	if (data->win != NULL)
+		mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+}
+void	free_all_mlx(t_data *data)
+{
+    //free(data->data);
+    free_args(data->map);
+	free_images(data);
+	free_minilbx(data);
+}
 
 void init_game(t_data* data,t_pars* input)
 {
@@ -50,9 +77,9 @@ void init_game(t_data* data,t_pars* input)
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, data->width, data->height, "CUB3D");
     data->img = mlx_new_image(data->mlx,data->width, data->height);
-    data->img_map =  mlx_new_image(data->mlx, data->wid_map, data->hei_map);
+    // data->img_map =  mlx_new_image(data->mlx, data->wid_map, data->hei_map);
     data->data = mlx_get_data_addr(data->img, &data->bpp, &data->len_line, &data->endiane);
-    data->data_map = mlx_get_data_addr(data->img_map, &data->bpp, &data->len_line_map, &data->endiane);
+    // data->data_map = mlx_get_data_addr(data->img_map, &data->bpp, &data->len_line_map, &data->endiane);
     
     data->img_height = 32;
     data->img_width = 32;
@@ -62,6 +89,11 @@ void init_game(t_data* data,t_pars* input)
     data->texture2 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "SO"), &data->img_width, &data->img_height);
     data->texture3 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "EA"), &data->img_width, &data->img_height);
     data->texture4 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input, "WE"), &data->img_width, &data->img_height);
+    if (!data->texture1 || !data->texture2 || !data->texture3 || !data->texture4)
+    {
+        free_all_mlx(data);
+        free_all(input, NULL, NULL, "❌ Error\none of images failed"); // i left it here
+    }
     data->tex_data[NORTH] =  (int *)mlx_get_data_addr(data->texture1, &data->bpp, &data->size_line1, &data->endiane);
     data->tex_data[SOUTH] =  (int *)mlx_get_data_addr(data->texture2, &data->bpp, &data->size_line2, &data->endiane);
     data->tex_data[EAST] =  (int *)mlx_get_data_addr(data->texture3, &data->bpp, &data->size_line3, &data->endiane);
@@ -555,7 +587,6 @@ void draw_ray_on_wind(RayCalculationData* ray_data, int j, t_data* game)
     game->iside_win_map = false; // Set flag before drawing
 
     draw_view_ray((int)ray_data->draw_x, (int)ray_data->draw_y, j, game, ray_data);
-    //draw_view_ray(*ray_data, j, game);
     game->iside_win_map = true;  // Reset flag after drawing
 }
 
