@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 15:35:53 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 10:02:47 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/07/31 10:34:20 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	free_lines(t_pars *data)
 void	free_error(t_pars *data, char *msg)
 {
 	free(data);
-	printf("%s\n", msg);
+	if (msg)
+		printf("%s\n", msg);
 	exit(EXIT_FAILURE);
 }
 

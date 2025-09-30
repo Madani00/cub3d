@@ -62,11 +62,11 @@ char	*get_right_texture(t_pars *data, char *iden)
 void	path_texture(t_pars *data, char c)
 {
 	if (c == 'E')
-		data->direction = ft_strdup(get_right_texture(data, "EA"));
+		data->direction = get_right_texture(data, "EA");
 	else if (c == 'N')
-		data->direction = ft_strdup(get_right_texture(data, "NO"));
+		data->direction = get_right_texture(data, "NO");
 	else if (c == 'S')
-		data->direction = ft_strdup(get_right_texture(data, "SO"));
+		data->direction = get_right_texture(data, "SO");
 	else if (c == 'W')
-		data->direction = ft_strdup(get_right_texture(data, "WE"));
+		data->direction = get_right_texture(data, "WE");
 }

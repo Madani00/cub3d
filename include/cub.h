@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aybouatr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 08:33:36 by aybouatr          #+#    #+#             */
+/*   Updated: 2025/08/04 08:33:39 by aybouatr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB_H
-#define CUB_H
+# define CUB_H
 
-#include "../minilibx-linux/mlx.h"
+# include "./../minilibx-linux/mlx.h"
+# include "cub3d.h"
+# include "raycasting.h"
 
-#include "raycasting.h"
-#include "cub3d.h"
-
-#endif // CCUB_H
+#endif
