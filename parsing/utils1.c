@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:04:47 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 16:31:02 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/09/30 14:02:48 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	num_length(char *str)
 		return (1);
 	else if (len < 3)
 		return (0);
-	if (ft_strncmp(str, "255", 3) >= 0)
+	if (ft_strncmp(str, "255", 3) > 0)
 		return (1);
 	return (0);
 }
