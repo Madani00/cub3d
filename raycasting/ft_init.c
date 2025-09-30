@@ -48,16 +48,16 @@ void	init_game_help(t_data *data, t_pars *input)
 			&data->endiane);
 	data->img_height = 32;
 	data->img_width = 32;
-	data->texture1 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
-				"NO"), &data->img_width, &data->img_height);
-	data->texture2 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
-				"SO"), &data->img_width, &data->img_height);
-	data->texture3 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
-				"EA"), &data->img_width, &data->img_height);
-	data->texture4 = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
-				"WE"), &data->img_width, &data->img_height);
-	if (!data->texture1 || !data->texture2 || !data->texture3
-		|| !data->texture4)
+	data->img[NORTH].data = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
+				"NO"), &data->imgs[NORTH].width , &data->imgs[NORTH].height);
+	data->imgs[SOUTH].data = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
+				"SO"), &data->imgs[SOUTH].width, &data->imgs[SOUTH].height);
+	data->imgs[EAST].data = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
+				"EA"), &data->imgs[EAST].width, &data->imgs[EAST].height);
+	data->imgs[WEST].data = mlx_xpm_file_to_image(data->mlx, get_right_texture(input,
+				"WE"), &data->imgs[WEST].width, &data->imgs[WEST].height);
+	if (!data->imgs[NORTH] || !data->imgs[WEST] || !data->imgs[SOUTH]
+		|| !data->imgs[EAST])
 	{
 		free_all_mlx(data);
 		free_all(input, NULL, NULL, "❌ Error\none of images failed");
@@ -70,14 +70,14 @@ void	init_game(t_data *data, t_pars *input)
 	data->data_pars = input;
 	init_player(&data->player, data->map);
 	init_game_help(data, input);
-	data->tex_data[NORTH] = (int *)mlx_get_data_addr(data->texture1, &data->bpp,
-			&data->size_line1, &data->endiane);
-	data->tex_data[SOUTH] = (int *)mlx_get_data_addr(data->texture2, &data->bpp,
-			&data->size_line2, &data->endiane);
-	data->tex_data[EAST] = (int *)mlx_get_data_addr(data->texture3, &data->bpp,
-			&data->size_line3, &data->endiane);
-	data->tex_data[WEST] = (int *)mlx_get_data_addr(data->texture4, &data->bpp,
-			&data->size_line4, &data->endiane);
+	data->imgs[NORTH].tex_data = (int *)mlx_get_data_addr(data->img[NORTH].data, &data->bpp,
+			data->imgs[NORTH].size_line, &data->endiane);
+	data->imgs[SOUTH].tex_data = (int *)mlx_get_data_addr(data->img[SOUTH].data, &data->bpp,
+			data->imgs[NORTH].size_line, &data->endiane);
+	data->imgs[EAST].tex_data = (int *)mlx_get_data_addr(data->img[EAST].data, &data->bpp,
+			data->imgs[EAST].size_line, &data->endiane);
+	data->imgs[WEST].tex_data = (int *)mlx_get_data_addr(data->img[WEST].data, &data->bpp,
+			data->imgs[WEST].size_line, &data->endiane);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
 

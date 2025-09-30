@@ -18,15 +18,15 @@ int	key_press(int keycode, t_data *data)
 		close_window(data);
 	if (keycode == W)
 		data->player.up = true;
-	else if (keycode == S)
+	 if (keycode == S)
 		data->player.down = true;
-	else if (keycode == A)
+	 if (keycode == A)
 		data->player.left = true;
-	else if (keycode == D)
+	 if (keycode == D)
 		data->player.right = true;
-	else if (keycode == LEFT)
+	 if (keycode == LEFT)
 		data->player.turn_left = true;
-	else if (keycode == RIGHT)
+	 if (keycode == RIGHT)
 		data->player.turn_right = true;
 	return (0);
 }
@@ -35,15 +35,15 @@ int	key_release(int keycode, t_data *data)
 {
 	if (keycode == W)
 		data->player.up = false;
-	else if (keycode == S)
+	 if (keycode == S)
 		data->player.down = false;
-	else if (keycode == A)
+	 if (keycode == A)
 		data->player.left = false;
-	else if (keycode == D)
+	 if (keycode == D)
 		data->player.right = false;
-	else if (keycode == LEFT)
+	 if (keycode == LEFT)
 		data->player.turn_left = false;
-	else if (keycode == RIGHT)
+	 if (keycode == RIGHT)
 		data->player.turn_right = false;
 	return (0);
 }
@@ -86,9 +86,9 @@ void	move_angle(t_player *player)
 
 void	move_player(t_data *game, float cos_angle, float sin_angle)
 {
+	move_angle(&game->player);
 	if (is_correct_move(game, sin_angle, cos_angle))
 		return ;
-	move_angle(&game->player);
 	if (game->player.up)
 	{
 		game->player.x += cos_angle * SPEED;

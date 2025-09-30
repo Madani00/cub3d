@@ -1,6 +1,6 @@
 NAME = cub3D
 CC = cc
-CFLAGS =  -Wall -Wextra -Werror
+CFLAGS =  
 RM = rm -f
 MK = make
 MLXDIR = minilibx-linux

@@ -21,11 +21,11 @@
 # include <unistd.h>
 
 # define PI 3.14159265359
-# define BLOCK 32
+# define BLOCK 45
 # define ANGLE_SPEED 0.006
-# define SPEED 1.3
-# define HEIGHT 1000
-# define WIDTH 1450
+# define SPEED 0.8
+# define HEIGHT 720
+# define WIDTH 1280
 # define LEFT 65361
 # define RIGHT 65363
 # define W 119
@@ -42,8 +42,7 @@ typedef enum e_dirs
 	NORTH,
 	SOUTH,
 	EAST,
-	WEST,
-	DOOR
+	WEST
 }				t_dirs;
 
 typedef struct s_player
@@ -87,11 +86,21 @@ typedef struct t_raycalculationdata
 	double		draw_y;
 	double		dist;
 	float		hiegh;
-	int			tex_x;
+	int		tex_x;
 	double		wall_x;
 	int			tex_y;
 	int			i;
 }				t_raycalculationdata;
+
+typedef struct img_info
+{
+	void *data; // texture
+	int *tex_data;
+	int height;
+	int width;
+	int size_line;
+}img_info;
+
 
 typedef struct s_data
 {
@@ -104,17 +113,12 @@ typedef struct s_data
 	int			bpp;
 	int			len_line;
 	int			endiane;
-	int			img_width;
-	int			img_height;
+
+	int			img_width; //
+	int			img_height; //
 	int			*tex_data[4];
-	void		*texture1;
-	void		*texture2;
-	void		*texture3;
-	void		*texture4;
-	int			size_line1;
-	int			size_line2;
-	int			size_line3;
-	int			size_line4;
+	img_info	imgs[4];
+	
 	t_player	player;
 	double		last_hit_wall_dist;
 	int			last_hit_side;

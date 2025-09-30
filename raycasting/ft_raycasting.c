@@ -29,27 +29,47 @@ float	fixed_dist(float x2, float y2, t_data *game)
 void	draw_view_ray(int i, t_data *data, t_raycalculationdata *ray_data)
 {
 	int (color), (top_pixel);
+	double step;
 	int (start_y), (end);
-	ray_data->dist = fixed_dist(ray_data->draw_x, ray_data->draw_y, data);
-	if (ray_data->dist < 0)
-		ray_data->dist = 1;
-	ray_data->hiegh = (BLOCK / ray_data->dist) * (WIDTH);
-	start_y = ((HEIGHT) - ray_data->hiegh) / 2;
-	end = start_y + ray_data->hiegh;
-	if (ray_data->side == 1)
-		ray_data->wall_x = fmod(ray_data->draw_x, BLOCK) / BLOCK;
-	else
-		ray_data->wall_x = fmod(ray_data->draw_y, BLOCK) / BLOCK;
-	ray_data->tex_x = (int)(ray_data->wall_x * TEXTURE_WID);
-	top_pixel = (HEIGHT - ray_data->hiegh) / 2;
+
+	ray_data->dist = ray_data->perp_wall * cos(ray_data->angle - data->player.angle);
+	ray_data->hiegh = (int)((WIDTH ) / (ray_data->dist ));
+	start_y = (HEIGHT / 2) - (ray_data->hiegh / 2);
+	end = (HEIGHT / 2) + (ray_data->hiegh / 2);
+
+	if (start_y < 0)
+		start_y = 0;
+	if (end >= WIDTH)
+		end = WIDTH - 1;
 	draw_ciel_flor(start_y, end, data, i);
+	if (ray_data->side == 0)
+		 ray_data->wall_x = (data->player.y / BLOCK) + ray_data->perp_wall + ray_data->ray_dir_y;
+	else
+		 ray_data->wall_x = (data->player.x / BLOCK) + ray_data->perp_wall + ray_data->ray_dir_x;
+	
+	ray_data->wall_x -= floor(ray_data->wall_x);
+
+	ray_data->tex_x = (int)data->imgs[ray_data->directins].width;
+
+	step = (double)data->imgs[ray_data->directins].height / (double)ray_data->hiegh;
+
+	// (*v).tex_y = ((*v).start_draw - WIN_HEIGHT / 2.0 + (*v).perp_wall_on_screen / 2.0) * (*v).texture_step;
+
+	// (*v).tindex = (*v).start_draw - 1;
+
+	ray_data->tex_y = (start_y - WIDTH / 2.0 + ray_data->hiegh / 2) * step;
+	
 	while (start_y < end)
 	{
-		ray_data->tex_y = (start_y - top_pixel) * ((double)TEXTURE_HEI
-				/ ray_data->hiegh);
-		color = data->tex_data[ray_data->directins][(TEXTURE_WID
-				* ray_data->tex_y) + ray_data->tex_x];
-		put_pixel_into_frame(i, start_y, data, color);
+
+		if (ray_data->directins == EAST)
+			put_pixel_into_frame(i, start_y, data, 50);
+		else  if (ray_data->directins == NORTH)
+			put_pixel_into_frame(i, start_y, data, 110);
+		else  if (ray_data->directins == WEST)
+			put_pixel_into_frame(i, start_y, data, 170);
+		else  
+			put_pixel_into_frame(i, start_y, data, 230);
 		start_y++;
 	}
 }

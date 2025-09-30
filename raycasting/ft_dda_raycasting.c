@@ -56,13 +56,13 @@ void	perform_dda_hit_detection(t_raycalculationdata *ray_data, t_data *game)
 			ray_data->map_y += ray_data->step_y;
 			ray_data->side = 1;
 		}
-		if (ray_data->map_x < 0 || ray_data->map_x >= game->data_pars->long_line
-			|| ray_data->map_y < 0 || ray_data->map_y >= game->data_pars->column
-			- 6)
-		{
-			ray_data->hit = true;
-			break ;
-		}
+		// if (ray_data->map_x < 0 || ray_data->map_x >= game->data_pars->long_line
+		// 	|| ray_data->map_y < 0 || ray_data->map_y >= game->data_pars->column
+		// 	- 6)
+		// {
+		// 	ray_data->hit = true;
+		// 	break ;
+		// }
 		if (game->map[ray_data->map_y][ray_data->map_x] == '1')
 			ray_data->hit = true;
 	}
@@ -79,7 +79,7 @@ void	calculate_perpendicular_wall_distance(t_raycalculationdata *ray_data)
 	{
 		ray_data->perp_wall = (ray_data->side_dist_y - ray_data->delta_dist_y);
 	}
-	ray_data->perp_wall *= BLOCK;
+	// ray_data->perp_wall *= BLOCK;
 }
 
 void	calculate_drawing_coordinates(t_raycalculationdata *ray_data,
@@ -100,6 +100,6 @@ void	ray_line(t_data *game, float angle, int j)
 	ray_data.hit = false;
 	perform_dda_hit_detection(&ray_data, game);
 	calculate_perpendicular_wall_distance(&ray_data);
-	calculate_drawing_coordinates(&ray_data, game);
+	// calculate_drawing_coordinates(&ray_data, game);
 	draw_view_ray(j, game, &ray_data);
 }
