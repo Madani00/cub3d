@@ -41,7 +41,8 @@ void	free_lines(t_pars *data)
 void	free_error(t_pars *data, char *msg)
 {
 	free(data);
-	printf("%s\n", msg);
+	if (msg)
+		printf("%s\n", msg);
 	exit(EXIT_FAILURE);
 }
 

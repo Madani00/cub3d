@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:07:20 by eamchart          #+#    #+#             */
-/*   Updated: 2025/09/30 14:00:01 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:28:26 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,23 +58,7 @@ void	parse_color_helper(t_pars *data, char **configs, char **clr_range)
 	}
 	data->color[data->index_c].iden = ft_strdup(configs[0]);
 }
-int comma_find(char *s)
-{
-	int i;
-	int found;
 
-	found = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == ',')
-			found++;
-		i++;
-	}
-	if (found == 2)
-		return (0);
-	return (1);
-}
 void	parse_color(t_pars *data, int i)
 {
 	char	**configs;
@@ -82,11 +66,11 @@ void	parse_color(t_pars *data, int i)
 	char	**clr_range;
 
 	numb = 0;
-	configs = ft_split2(data->map_all[i], " \t");      //   F       50,50,50
+	configs = ft_split2(data->map_all[i], " \t");
 	while (configs[numb] != NULL)
 		numb++;
-	if (numb != 2 || ft_strlen(configs[0]) != 1 || configs[1][0] == ',' \
-		|| configs[1][ft_strlen(configs[1]) - 1] == ',' || comma_find(configs[1]))
+	if (numb != 2 || ft_strlen(configs[0]) != 1 \
+		|| comma_find(configs[1]))
 		free_all(data, configs, NULL, "❌ Error\nColor has no or more args");
 	clr_range = ft_split(configs[1], ',');
 	parse_color_helper(data, configs, clr_range);

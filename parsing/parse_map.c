@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:20:32 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/19 14:27:53 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/08/06 10:04:05 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	adjust_map(t_pars *data)
 
 	i = 5;
 	k = 0;
-	data->map = malloc(sizeof(char *) * (data->column - 5)); // 5
+	data->map = malloc(sizeof(char *) * (data->column - 5));
 	if (!data->map)
 		exit(EXIT_FAILURE);
 	while (data->map_all[++i])
@@ -95,7 +95,6 @@ void	check_map(t_pars *data)
 	while (data->map_all[i])
 	{
 		valid_map(data, i);
-		
 		i++;
 	}
 	if (data->orientation == 0)

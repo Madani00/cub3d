@@ -6,7 +6,7 @@
 /*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:38:06 by eamchart          #+#    #+#             */
-/*   Updated: 2025/07/10 11:54:27 by eamchart         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:30:05 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,22 @@ char	*join(char *s1, char *s2)
 	new[i] = '\0';
 	free(s1);
 	return (new);
+}
+
+int	comma_find(char *s)
+{
+	int	i;
+	int	found;
+
+	found = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == ',')
+			found++;
+		i++;
+	}
+	if (found == 2)
+		return (0);
+	return (1);
 }
