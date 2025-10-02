@@ -22,7 +22,7 @@ $(NAME): $(OBJS)
 		@$(CC) $(CFLAGS) $(OBJS) -L./minilibx-linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm  $(LIBFT) -o $(NAME)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -I./includes -I./minilibx-linux -I/usr/include -c $< -o $@
+	@$(CC) $(CFLAGS) -I./includes -I./minilibx-linux -I/usr/include -c $< -o $@
 
 clean:
 		@$(MK) clean -C ./Libft

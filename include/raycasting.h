@@ -21,7 +21,7 @@
 # include <unistd.h>
 
 # define PI 3.14159265359
-# define BLOCK 45
+# define BLOCK 4000
 # define ANGLE_SPEED 0.006
 # define SPEED 0.8
 # define HEIGHT 720
@@ -98,12 +98,23 @@ typedef struct img_info
 	int *tex_data;
 	int height;
 	int width;
+	int bpp;
 	int size_line;
 }img_info;
 
 
 typedef struct s_data
 {
+	void		*texture1;
+	void		*texture2;
+	void		*texture3;
+	void		*texture4;
+	int			size_line1;
+	int			size_line2;
+	int			size_line3;
+	int			size_line4;
+
+
 	void		*win;
 	void		*mlx;
 	void		*img;

@@ -21,14 +21,14 @@ int	close_window(t_data *game)
 
 void	free_images(t_data *data)
 {
-	if (data->texture1)
-		mlx_destroy_image(data->mlx, data->texture1);
-	if (data->texture2)
-		mlx_destroy_image(data->mlx, data->texture2);
-	if (data->texture3)
-		mlx_destroy_image(data->mlx, data->texture3);
-	if (data->texture4)
-		mlx_destroy_image(data->mlx, data->texture4);
+	if (data->imgs[SOUTH].data)
+		mlx_destroy_image(data->mlx, data->imgs[SOUTH].data);
+	if (data->imgs[EAST].data)
+		mlx_destroy_image(data->mlx, data->imgs[EAST].data);
+	if (data->imgs[NORTH].data)
+		mlx_destroy_image(data->mlx, data->imgs[NORTH].data);
+	if (data->imgs[WEST].data)
+		mlx_destroy_image(data->mlx, data->imgs[WEST].data);
 	if (data->img)
 		mlx_destroy_image(data->mlx, data->img);
 }

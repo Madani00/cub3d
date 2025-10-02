@@ -21,10 +21,10 @@ $(NAME): ${OBJS}
 		ar rcs ${NAME} ${OBJS}
 
 %.o:%.c
-		${CC} ${FLAGS} -c $< -o $@
+		@${CC} ${FLAGS} -c $< -o $@
 
 clean:
-		${RM} ${OBJS} ${BONUS_OBJ}
+		@${RM} ${OBJS} ${BONUS_OBJ}
 
 fclean: clean
 		${RM} ${NAME}
