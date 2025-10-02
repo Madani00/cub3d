@@ -21,9 +21,9 @@
 # include <unistd.h>
 
 # define PI 3.14159265359
-# define BLOCK 4000
+# define BLOCK 64
 # define ANGLE_SPEED 0.006
-# define SPEED 0.8
+# define SPEED 1.4
 # define HEIGHT 720
 # define WIDTH 1280
 # define LEFT 65361

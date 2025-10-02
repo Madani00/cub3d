@@ -69,27 +69,13 @@ bool	touch_wall(float x_ray, float y_ray, t_data *data, int block)
 
 bool	is_touch_wall(float x_ray, float y_ray, t_data *data, int block)
 {
-	// return (touch_wall(x_ray + 1,y_ray + 1 ,data,block) 
-	// 		|| touch_wall(x_ray - 1,y_ray - 1 ,data,block)
-	// 		|| touch_wall(x_ray + 1,y_ray - 1 ,data,block)
-	// 		|| touch_wall(x_ray - 1,y_ray + 1 ,data,block)
-	// 		);
-
-	int	x;
-	int	y;
-
-	x = x_ray / block;
-	y = y_ray / block;
-	if (data->map[y][x] == '1')
-		return (true);
-	return (false);
-
+	return (touch_wall(x_ray + 10,y_ray + 10 ,data,block) 
+			|| touch_wall(x_ray - 10,y_ray - 10 ,data,block)
+			|| touch_wall(x_ray + 10,y_ray - 10 ,data,block)
+			|| touch_wall(x_ray - 10,y_ray + 10 ,data,block)
+			);
 }
 
-float	sqr_two_point(float x, float y)
-{
-	return (sqrt(x * x + y * y));
-}
 
 int	main(int ac, char **av)
 {
