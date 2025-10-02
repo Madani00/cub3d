@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aybouatr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eamchart <eamchart@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 07:32:58 by aybouatr          #+#    #+#             */
-/*   Updated: 2025/08/04 07:33:02 by aybouatr         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:06:22 by eamchart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	init_player(t_player *player, char **map)
 void	init_game_help(t_data *data, t_pars *input)
 {
 	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "CUB3D");
+	data->win = NULL;
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	data->data = mlx_get_data_addr(data->img, &data->bpp, &data->len_line, &data->endiane);
 	data->img_height = 32;
@@ -62,6 +62,8 @@ void	init_game_help(t_data *data, t_pars *input)
 		free_all_mlx(data);
 		free_all(input, NULL, NULL, "❌ Error\none of images failed");
 	}
+	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "CUB3D");
+
 }
 
 void	init_game(t_data *data, t_pars *input)
